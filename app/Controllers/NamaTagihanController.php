@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class NamaTagihan extends BaseController
+class NamaTagihanController extends BaseController
 {
     public function index()
     {

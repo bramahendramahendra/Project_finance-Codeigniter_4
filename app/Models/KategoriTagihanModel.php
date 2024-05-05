@@ -12,7 +12,7 @@ class KategoriTagihanModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['kategori', 'deskripsi', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['kategori', 'deskripsi', 'created_at', 'updated_at', 'deleted_at'];
 
 
     protected bool $allowEmptyInserts = false;
@@ -55,21 +55,34 @@ class KategoriTagihanModel extends Model
 
     public function createKategori($data) 
     {
-        echo "<pre>tes";
-        var_dump($data);
-        echo "<pre>";
-        $this->save($data);
-        echo 'tes';die;
-        return ;
+        $this->db->transStart();
+        if (!$this->insert($data)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
     }
 
     public function updateKategori($id, $data) 
     {
-        return $this->update($id, $data);
+        $this->db->transStart();
+        if (!$this->update($id, $data)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
     }
 
      public function deleteKategori($id) 
     {
-        return $this->delete($id);
+        $this->db->transStart();
+        if (!$this->delete($id)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
     }
 }
