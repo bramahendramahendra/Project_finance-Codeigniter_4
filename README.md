@@ -66,3 +66,24 @@ Additionally, make sure that the following extensions are enabled in your PHP:
 - json (enabled by default - don't turn it off)
 - [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
 - [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+
+
+## Requirements
+
+Project Web Development - V0.0.1
+
+Peoject Web Development - Codeigniter 4 - Aplikasi FInance Admin
+
+Tools :
+
+CodeIgniter 4 (v4.4.3)
+PHP 7.4+ (including 8.2)
+AdminLTE v3.2.0
+
+## Getting Started
+
+Running CI
+php spark serve
+
+## Database
+Local Database name : project_finance_ci4
