@@ -4,16 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class KategoriTagihanModel extends Model
+class JenisStatusModel extends Model
 {
-    protected $table            = 'kategori_tagihan';
+    protected $table            = 'jenis_status';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['kategori', 'deskripsi', 'created_at', 'updated_at', 'deleted_at'];
-
+    protected $allowedFields    = ['jenis_status', 'deskripsi', 'created_at', 'updated_at', 'deleted_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -45,15 +44,15 @@ class KategoriTagihanModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function getAllKategori() {
+    public function getAllJenisStatus() {
         return $this->findAll();
     }
 
-    public function getKategoriById($id) {
+    public function getJenisStatusById($id) {
         return $this->find($id);
     }
 
-    public function createKategori($data) 
+    public function createJenisStatus($data) 
     {
         $this->db->transStart();
         if (!$this->insert($data)) {
@@ -64,7 +63,7 @@ class KategoriTagihanModel extends Model
         return true;
     }
 
-    public function updateKategori($id, $data) 
+    public function updateJenisStatus($id, $data) 
     {
         $this->db->transStart();
         if (!$this->update($id, $data)) {
@@ -75,7 +74,7 @@ class KategoriTagihanModel extends Model
         return true;
     }
 
-    public function deleteKategori($id) 
+    public function deleteJenisStatus($id) 
     {
         $this->db->transStart();
         if (!$this->delete($id)) {

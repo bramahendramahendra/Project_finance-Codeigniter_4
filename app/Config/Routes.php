@@ -25,3 +25,9 @@ $routes->get('/nama_tagihan', 'NamaTagihanController::index');
 $routes->post('/nama_tagihan/store', 'NamaTagihanController::store');
 $routes->post('/nama_tagihan/update/(:segment)', 'NamaTagihanController::update/$1');
 $routes->get('/nama_tagihan/delete/(:segment)', 'NamaTagihanController::delete/$1');
+
+// Jenis Status
+$routes->get('/jenis_status', 'JenisStatusController::index');
+$routes->post('/jenis_status/store', 'JenisStatusController::store');
+$routes->post('/jenis_status/update/(:segment)', 'JenisStatusController::update/$1');
+$routes->get('/jenis_status/delete/(:segment)', 'JenisStatusController::delete/$1');

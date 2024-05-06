@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class NamaTagihanModel extends Model
+class StatusModel extends Model
 {
-    protected $table            = 'nama_tagihan';
+    protected $table            = 'statuses';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';

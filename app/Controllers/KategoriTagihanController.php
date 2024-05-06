@@ -39,8 +39,6 @@ class KategoriTagihanController extends BaseController
             session()->setFlashdata('error', 'Gagal Menambahkan Data Kategori.');
         }
 
-        // $this->KategoriTagihanModel->createKategori($dataInsert);
-        // session()->setFlashdata('pesan', 'Data Kategori Berhasil Ditambahkan !!');
         return redirect()->to('kategori_tagihan');
     }
 
@@ -57,8 +55,6 @@ class KategoriTagihanController extends BaseController
             session()->setFlashdata('error', 'Gagal Mengupdate Data Kategori.');
         }
 
-        // $this->KategoriTagihanModel->updateKategori($id, $dataUpdate);
-        // session()->setFlashdata('pesan', 'Data Kategori Berhasil Diupdate !!');
         return redirect()->to('kategori_tagihan');
     }
 
@@ -70,8 +66,6 @@ class KategoriTagihanController extends BaseController
             session()->setFlashdata('error', 'Gagal Kategori Menghapus Data.');
         }
 
-        // $this->KategoriTagihanModel->deleteKategori($id);
-        // session()->setFlashdata('pesan', 'Data Berhasil Dihapus !!');
         return redirect()->to('kategori_tagihan');
     }
 }
