@@ -43,4 +43,45 @@ class NamaTagihanModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getAll() {
+        return $this->findAll();
+    }
+
+    public function getById($id) {
+        return $this->find($id);
+    }
+
+    public function create($data) 
+    {
+        $this->db->transStart();
+        if (!$this->insert($data)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
+    }
+
+    public function update($id, $data) 
+    {
+        $this->db->transStart();
+        if (!$this->update($id, $data)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
+    }
+
+    public function delete($id) 
+    {
+        $this->db->transStart();
+        if (!$this->delete($id)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
+    }
 }

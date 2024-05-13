@@ -31,3 +31,8 @@ $routes->get('/jenis_status', 'JenisStatusController::index');
 $routes->post('/jenis_status/store', 'JenisStatusController::store');
 $routes->post('/jenis_status/update/(:segment)', 'JenisStatusController::update/$1');
 $routes->get('/jenis_status/delete/(:segment)', 'JenisStatusController::delete/$1');
+
+// Status
+$routes->get('/status', 'StatusController::index');
+$routes->post('/status/store', 'StatusController::store');
+$routes->post('/status/check_code_status/(:segment)/(:segment)', 'StatusController::check_code_status/$1/$2');

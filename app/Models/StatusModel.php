@@ -6,13 +6,13 @@ use CodeIgniter\Model;
 
 class StatusModel extends Model
 {
-    protected $table            = 'statuses';
+    protected $table            = 'status';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['id_jenis_status', 'code_status', 'status', 'deskripsi', 'created_at', 'updated_at', 'deleted_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -21,7 +21,7 @@ class StatusModel extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -43,4 +43,30 @@ class StatusModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function isCodeStatusExists($codeStatus, $idJenisStatus)
+    {
+        return $this->where(['code_status' => $codeStatus, 'id_jenis_status' => $idJenisStatus])->first() !== null;
+    }
+
+    public function getAllStatus() {
+        $this->select('status.*, jenis_status.jenis_status as jenis_status');
+        $this->join('jenis_status', 'jenis_status.id = status.id_jenis_status');
+        return $this->findAll();
+    }
+
+    public function getStatusById($id) {
+        return $this->find($id);
+    }
+
+    public function createStatus($data) 
+    {
+        $this->db->transStart();
+        if (!$this->insert($data)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
+    }
 }

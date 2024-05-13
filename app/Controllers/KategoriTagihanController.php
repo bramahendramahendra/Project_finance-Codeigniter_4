@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
-use App\Models\KategoriTagihanModel;
+use App\Models\KategoriTagihanModel; 
 
 class KategoriTagihanController extends BaseController
 {

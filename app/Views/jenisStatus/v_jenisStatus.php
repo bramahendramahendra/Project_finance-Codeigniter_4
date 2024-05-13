@@ -6,7 +6,7 @@
                 <div class="card-tools">
                     <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add-data">
                         <i class="fas fa-plus-circle"></i>
-                        Tambah Kategori
+                        Tambah <?=$judul?>
                     </button>
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>

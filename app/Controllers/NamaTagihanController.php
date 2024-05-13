@@ -4,15 +4,22 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\NamaTagihanModel;
 
 class NamaTagihanController extends BaseController
 {
+    public function __construct() 
+    {
+        $this->NamaTagihanModel = new NamaTagihanModel();
+    }
+
     public function index()
     {
         $data = [
             'judul' => 'Nama Tagihan',
             'menu' => 'namaTagihan',
             'page' => 'namaTagihan/v_namaTagihan',
+            'data' => $this->NamaTagihanModel->getAll(),
         ];
         return view('v_template', $data);
     }

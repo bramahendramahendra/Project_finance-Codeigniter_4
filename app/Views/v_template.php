@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
     <link rel="stylesheet" href="<?=base_url('resources')?>/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="<?=base_url('resources')?>/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="<?=base_url('resources')?>/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <!-- iCheck -->
     <link rel="stylesheet" href="<?=base_url('resources')?>/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- JQVMap -->
@@ -235,6 +238,25 @@
                 </p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="<?= base_url('jenis_status') ?>" class="nav-link <?= $menu == 'jenisStatus' ? 'active' : '' ?>">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Jenis Status
+                    <!-- <span class="right badge badge-danger">New</span> -->
+                </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="<?= base_url('status') ?>" class="nav-link <?= $menu == 'status' ? 'active' : '' ?>">
+                <i class="nav-icon far fa-calendar-alt"></i>
+                <p>
+                    Status
+                    <!-- <span class="badge badge-info right">2</span> -->
+                </p>
+                </a>
+            </li>
+
             <li class="nav-item menu-open">
                 <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -264,15 +286,7 @@
                 </li>
                 </ul>
             </li>
-            <li class="nav-item">
-                <a href="pages/widgets.html" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                    Widgets
-                    <span class="right badge badge-danger">New</span>
-                </p>
-                </a>
-            </li>
+           
             <li class="nav-item">
                 <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-copy"></i>
@@ -492,15 +506,6 @@
                 </ul>
             </li>
             <li class="nav-header">EXAMPLES</li>
-            <li class="nav-item">
-                <a href="pages/calendar.html" class="nav-link">
-                <i class="nav-icon far fa-calendar-alt"></i>
-                <p>
-                    Calendar
-                    <span class="badge badge-info right">2</span>
-                </p>
-                </a>
-            </li>
             <li class="nav-item">
                 <a href="pages/gallery.html" class="nav-link">
                 <i class="nav-icon far fa-image"></i>
@@ -933,6 +938,8 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="<?=base_url('resources')?>/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Select2 -->
+<script src="<?=base_url('resources')?>/plugins/select2/js/select2.full.min.js"></script>
 <!-- ChartJS -->
 <script src="<?=base_url('resources')?>/plugins/chart.js/Chart.min.js"></script>
 <!-- Sparkline -->
@@ -976,6 +983,8 @@
       "responsive": true, "lengthChange": false, "autoWidth": false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#table-datatables_wrapper .col-md-6:eq(0)');
+
+    $('.select2').select2()
   });
 </script>
 </body>

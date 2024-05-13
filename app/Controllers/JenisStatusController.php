@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\JenisStatusModel;
 
 class JenisStatusController extends BaseController
 {
@@ -25,15 +26,32 @@ class JenisStatusController extends BaseController
 
     public function store()
     {
-        $dataInsert = [
-            'jenis_status' => $this->request->getPost('jenis_status'),
-            'deskripsi' => $this->request->getPost('deskripsi')
-        ];
-      
-        if ($this->JenisStatusModel->createJenisStatus($dataInsert)) {
-            session()->setFlashdata('success', 'Data Jenis Status Berhasil Ditambahkan.');
+        // echo "<pre>";
+        // var_dump($this->request->getMethod());
+        // echo "</pre>";
+        // die;
+        if ($this->request->getMethod() === 'POST') {
+            $rules = [
+                'jenis_status' => 'required',
+                'deskripsi' => 'permit_empty|string'
+            ];
+
+            if (!$this->validate($rules)) {
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            }
+
+            $dataInsert = [
+                'jenis_status' => $this->request->getPost('jenis_status'),
+                'deskripsi' => $this->request->getPost('deskripsi')
+            ];
+        
+            if ($this->JenisStatusModel->createJenisStatus($dataInsert)) {
+                session()->setFlashdata('success', 'Data Jenis Status Berhasil Ditambahkan.');
+            } else {
+                session()->setFlashdata('error', 'Gagal Menambahkan Data Jenis Status.');
+            }
         } else {
-            session()->setFlashdata('error', 'Gagal Menambahkan Data Jenis Status.');
+            session()->setFlashdata('error', 'Gagal Menambahkan Input Data Jenis Status.');
         }
 
         return redirect()->to('jenis_status');
