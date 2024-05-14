@@ -54,5 +54,10 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
+
+        // Inisialisasi variabel
+
+        // Status 
+        $this->statusKategoriTagihan = 5;
     }
 }

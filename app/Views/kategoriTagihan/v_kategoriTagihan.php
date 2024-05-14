@@ -6,7 +6,7 @@
                 <div class="card-tools">
                     <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add-data">
                         <i class="fas fa-plus-circle"></i>
-                        Tambah Kategori
+                        Tambah <?=$judul?>
                     </button>
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
@@ -51,6 +51,7 @@
                             <th width="5%">#</th>
                             <th>Kategori</th>
                             <th>Deskripsi</th>
+                            <th>Status</th>
                             <th width="15%">Aksi</th>
                         </tr>
                     </thead>
@@ -62,6 +63,7 @@
                                 <td><?= $no++ ?></td>
                                 <td><?= $value['kategori'] ?></td>
                                 <td><?= $value['deskripsi'] ?></td>
+                                <td><?= $value['nama_status'] ?></td>
                                 <td> 
                                     <!-- <button class="btn btn-primary btn-sm" >
                                         <i class="fas fa-folder" >
@@ -87,6 +89,7 @@
                             <th>#</th>
                             <th>Kategori</th>
                             <th>Deskripsi</th>
+                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </tfoot>
@@ -155,12 +158,20 @@
             <?php echo form_open('kategori_tagihan/store') ?>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="">Kategori</label>
-                    <input type="text" name="kategori" class="form-control" placeholder="Kategori" required>
+                    <label for="kategori">Kategori</label>
+                    <input type="text" name="kategori" class="form-control" placeholder="Kategori" id="create_kategori" required>
                 </div>
                 <div class="form-group">
-                    <label for="">Deskripsi</label>
-                    <input type="text" name="deskripsi" class="form-control" placeholder="Deskripsi" required>
+                    <label for="deskripsi">Deskripsi</label>
+                    <input type="text" name="deskripsi" class="form-control" placeholder="Deskripsi" id="create_deskripsi" required>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select name="status" class="form-control select2" id="create_status" style="width: 100%;" required>
+                        <?php foreach ($optionsStatus as $status): ?>
+                            <option value="<?= esc($status['id']); ?>"><?= esc($status['status']); ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
@@ -191,11 +202,19 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="">Kategori</label>
-                        <input type="text" name="kategori" value="<?= $value['kategori'] ?>" class="form-control" placeholder="Kategori" required>
+                        <input type="text" name="kategori" value="<?= $value['kategori'] ?>" class="form-control" placeholder="Kategori" id="create_kategori" required>
                     </div>
                     <div class="form-group">
                         <label for="">Deskripsi</label>
-                        <input type="text" name="deskripsi" value="<?= $value['deskripsi'] ?>" class="form-control" placeholder="Deskripsi" required>
+                        <input type="text" name="deskripsi" value="<?= $value['deskripsi'] ?>" class="form-control" placeholder="Deskripsi" id="create_deskripsi" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select name="status" class="form-control select2" id="create_status" style="width: 100%;" required>
+                            <?php foreach ($optionsStatus as $status): ?>
+                                <option value="<?= esc($status['id']); ?>"><?= esc($status['status']); ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">

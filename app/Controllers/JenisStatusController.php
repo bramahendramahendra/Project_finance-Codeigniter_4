@@ -26,10 +26,6 @@ class JenisStatusController extends BaseController
 
     public function store()
     {
-        // echo "<pre>";
-        // var_dump($this->request->getMethod());
-        // echo "</pre>";
-        // die;
         if ($this->request->getMethod() === 'POST') {
             $rules = [
                 'jenis_status' => 'required',
@@ -59,15 +55,32 @@ class JenisStatusController extends BaseController
 
     public function update($id)
     {
-        $dataUpdate = [
-            'jenis_status' => $this->request->getPost('jenis_status'),
-            'deskripsi' => $this->request->getPost('deskripsi')
-        ];
+        if ($this->request->getMethod() === 'POST' && ($id !== '' && !empty($id))) {
+            $rules = [
+                'jenis_status' => 'required',
+                'deskripsi' => 'permit_empty|string'
+            ];
 
-        if ($this->JenisStatusModel->updateJenisStatus($id, $dataUpdate)) {
-            session()->setFlashdata('success', 'Data Jenis Status Berhasil Diupdate.');
+            if (!$this->validate($rules)) {
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            }
+
+            $dataUpdate = [
+                'jenis_status' => $this->request->getPost('jenis_status'),
+                'deskripsi' => $this->request->getPost('deskripsi')
+            ];
+
+            if ($this->JenisStatusModel->updateJenisStatus($id, $dataUpdate)) {
+                session()->setFlashdata('success', 'Data Jenis Status Berhasil Diupdate.');
+            } else {
+                session()->setFlashdata('error', 'Gagal Mengupdate Data Jenis Status.');
+            }
         } else {
-            session()->setFlashdata('error', 'Gagal Mengupdate Data Jenis Status.');
+            if($this->request->getMethod() === 'POST') {
+                session()->setFlashdata('error', 'Gagal Menambahkan Input Data Jenis Status.');
+            } else {
+                session()->setFlashdata('error', 'Gagal! ID tidak ditemukan.');
+            }
         }
 
         return redirect()->to('jenis_status');
@@ -75,10 +88,14 @@ class JenisStatusController extends BaseController
 
     public function delete($id)
     {
-        if ($this->JenisStatusModel->deleteJenisStatus($id)) {
-            session()->setFlashdata('success', 'Data Jenis Status Berhasil Dihapus.');
+        if ($id !== '' && !empty($id)) {
+            if ($this->JenisStatusModel->deleteJenisStatus($id)) {
+                session()->setFlashdata('success', 'Data Jenis Status Berhasil Dihapus.');
+            } else {
+                session()->setFlashdata('error', 'Gagal Menghapus Data Jenis Status.');
+            }
         } else {
-            session()->setFlashdata('error', 'Gagal Menghapus Data Jenis Status.');
+            session()->setFlashdata('error', 'Gagal! ID tidak ditemukan.');
         }
 
         return redirect()->to('jenis_status');

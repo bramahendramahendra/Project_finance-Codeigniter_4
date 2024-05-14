@@ -12,7 +12,7 @@ class KategoriTagihanModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['kategori', 'deskripsi', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields    = ['kategori', 'deskripsi', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
 
     protected bool $allowEmptyInserts = false;
@@ -46,6 +46,8 @@ class KategoriTagihanModel extends Model
     protected $afterDelete    = [];
 
     public function getAllKategori() {
+        $this->select('kategori_tagihan.*, status.status as nama_status');
+        $this->join('status', 'status.id = kategori_tagihan.status');
         return $this->findAll();
     }
 
@@ -60,6 +62,9 @@ class KategoriTagihanModel extends Model
             $this->db->transRollback();
             return false;
         }
+        // echo $this->db-last_query();
+        // echo $this->db->getLastQuery();
+        // die;
         $this->db->transComplete();
         return true;
     }

@@ -59,10 +59,36 @@ class StatusModel extends Model
         return $this->find($id);
     }
 
+    public function getStatusByIdJenisStatus($id_jenis_status) {
+        return $this->where('id_jenis_status', $id_jenis_status)->findAll();
+    }
+
     public function createStatus($data) 
     {
         $this->db->transStart();
         if (!$this->insert($data)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
+    }
+
+    public function updateStatus($id, $data) 
+    {
+        $this->db->transStart();
+        if (!$this->update($id, $data)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
+    }
+
+    public function deleteStatus($id) 
+    {
+        $this->db->transStart();
+        if (!$this->delete($id)) {
             $this->db->transRollback();
             return false;
         }

@@ -208,11 +208,19 @@
                 <?php echo form_open('status/update/'.$value['id']) ?>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="">Jenis Status</label>
-                        <input type="text" name="jenis_status" value="<?= $value['jenis_status'] ?>" class="form-control" placeholder="Jenis Status" required>
+                        <label for="jenis_status">Jenis Status</label>
+                        <input type="text" name="jenis_status" value="<?= $value['jenis_status'] ?>" class="form-control" placeholder="Jenis Status" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="">Deskripsi</label>
+                        <label for="Code Status">Code Status</label>
+                        <input type="text" name="code_status" value="<?= $value['code_status'] ?>" class="form-control" placeholder="Code Status" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="Status">Status</label>
+                        <input type="text" name="status" value="<?= $value['status'] ?>" class="form-control" placeholder="Status" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Deskripsi">Deskripsi</label>
                         <input type="text" name="deskripsi" value="<?= $value['deskripsi'] ?>" class="form-control" placeholder="Deskripsi" required>
                     </div>
                 </div>

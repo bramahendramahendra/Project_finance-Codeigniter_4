@@ -12,7 +12,7 @@ class NamaTagihanModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['id_kategori', 'nama_tagihan', 'deskripsi', 'jumlah_tagihan', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -21,7 +21,7 @@ class NamaTagihanModel extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -44,15 +44,29 @@ class NamaTagihanModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function getAll() {
+    public function getAllData() {
+        $this->select('
+            nama_tagihan.*, 
+            kategori_tagihan.kategori as kategori,
+            status.status as status,
+        ');
+        $this->join('kategori_tagihan', 'kategori_tagihan.id = nama_tagihan.id_kategori');
+        $this->join('status', 'status.code_status = nama_tagihan.status');
         return $this->findAll();
     }
 
-    public function getById($id) {
+    public function getDataById($id) {
+        $this->select('
+            nama_tagihan.*, 
+            kategori_tagihan.kategori as kategori,
+            status.status as status,
+        ');
+        $this->join('kategori_tagihan', 'kategori_tagihan.id = nama_tagihan.id_kategori');
+        $this->join('status', 'status.code_status = nama_tagihan.status');
         return $this->find($id);
     }
 
-    public function create($data) 
+    public function createData($data) 
     {
         $this->db->transStart();
         if (!$this->insert($data)) {
@@ -63,7 +77,7 @@ class NamaTagihanModel extends Model
         return true;
     }
 
-    public function update($id, $data) 
+    public function updateData($id, $data) 
     {
         $this->db->transStart();
         if (!$this->update($id, $data)) {
@@ -74,7 +88,7 @@ class NamaTagihanModel extends Model
         return true;
     }
 
-    public function delete($id) 
+    public function deleteData($id) 
     {
         $this->db->transStart();
         if (!$this->delete($id)) {

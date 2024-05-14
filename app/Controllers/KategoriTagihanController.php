@@ -4,7 +4,8 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
-use App\Models\KategoriTagihanModel; 
+use App\Models\KategoriTagihanModel;
+use App\Models\StatusModel;
 
 class KategoriTagihanController extends BaseController
 {
@@ -13,6 +14,7 @@ class KategoriTagihanController extends BaseController
     public function __construct() 
     {
         $this->KategoriTagihanModel = new KategoriTagihanModel();
+        $this->StatusModel = new StatusModel();
     }
 
     public function index()
@@ -22,21 +24,39 @@ class KategoriTagihanController extends BaseController
             'menu' => 'kategoriTagihan',
             'page' => 'kategoriTagihan/v_kategoriTagihan',
             'data' => $this->KategoriTagihanModel->getAllKategori(),
+            'optionsStatus' => $this->StatusModel->getStatusByIdJenisStatus($this->statusKategoriTagihan),
         ];
+
+        // echo "<pre>";
+        // var_dump($data['data']);
+        // echo "</pre>";
+        // die;
+
         return view('v_template', $data);
     }
 
     public function store()
     {
-        $dataInsert = [
-            'kategori' => $this->request->getPost('kategori'),
-            'deskripsi' => $this->request->getPost('deskripsi')
-        ];
-      
-        if ($this->KategoriTagihanModel->createKategori($dataInsert)) {
-            session()->setFlashdata('success', 'Data Kategori Berhasil Ditambahkan.');
+        if ($this->request->getMethod() === 'POST') {
+            $rules = [
+                'kategori' => 'required',
+                'deskripsi' => 'permit_empty|string',
+                'status' => 'required|integer',
+            ];
+            
+            $dataInsert = [
+                'kategori' => $this->request->getPost('kategori'),
+                'deskripsi' => $this->request->getPost('deskripsi'),
+                'status' => $this->request->getPost('status'),
+            ];
+
+            if ($this->KategoriTagihanModel->createKategori($dataInsert)) {
+                session()->setFlashdata('success', 'Data Kategori Berhasil Ditambahkan.');
+            } else {
+                session()->setFlashdata('error', 'Gagal Menambahkan Data Kategori.');
+            }
         } else {
-            session()->setFlashdata('error', 'Gagal Menambahkan Data Kategori.');
+            session()->setFlashdata('error', 'Gagal Menambahkan Input Data Kategori.');
         }
 
         return redirect()->to('kategori_tagihan');
@@ -44,15 +64,30 @@ class KategoriTagihanController extends BaseController
 
     public function update($id)
     {
-        $dataUpdate = [
-            'kategori' => $this->request->getPost('kategori'),
-            'deskripsi' => $this->request->getPost('deskripsi')
-        ];
+        if ($this->request->getMethod() === 'POST' && ($id !== '' && !empty($id))) {
+            $rules = [
+                'kategori' => 'required',
+                'deskripsi' => 'permit_empty|string',
+                'status' => 'required|integer',
+            ];
 
-        if ($this->KategoriTagihanModel->updateKategori($id, $dataUpdate)) {
-            session()->setFlashdata('success', 'Data Kategori Berhasil Diupdate.');
+            $dataUpdate = [
+                'kategori' => $this->request->getPost('kategori'),
+                'deskripsi' => $this->request->getPost('deskripsi'),
+                'status' => $this->request->getPost('status'),
+            ];
+
+            if ($this->KategoriTagihanModel->updateKategori($id, $dataUpdate)) {
+                session()->setFlashdata('success', 'Data Kategori Berhasil Diupdate.');
+            } else {
+                session()->setFlashdata('error', 'Gagal Mengupdate Data Kategori.');
+            } 
         } else {
-            session()->setFlashdata('error', 'Gagal Mengupdate Data Kategori.');
+            if($this->request->getMethod() === 'POST') {
+                session()->setFlashdata('error', 'Gagal Menambahkan Input Data Kategori.');
+            } else {
+                session()->setFlashdata('error', 'Gagal! ID tidak ditemukan.');
+            }
         }
 
         return redirect()->to('kategori_tagihan');
@@ -60,10 +95,14 @@ class KategoriTagihanController extends BaseController
 
     public function delete($id)
     {
-        if ($this->KategoriTagihanModel->deleteKategori($id)) {
-            session()->setFlashdata('success', 'Data Kategori Berhasil Dihapus.');
+        if ($id !== '' && !empty($id)) {
+            if ($this->KategoriTagihanModel->deleteKategori($id)) {
+                session()->setFlashdata('success', 'Data Kategori Berhasil Dihapus.');
+            } else {
+                session()->setFlashdata('error', 'Gagal Kategori Menghapus Data.');
+            }
         } else {
-            session()->setFlashdata('error', 'Gagal Kategori Menghapus Data.');
+            session()->setFlashdata('error', 'Gagal! ID tidak ditemukan.');
         }
 
         return redirect()->to('kategori_tagihan');

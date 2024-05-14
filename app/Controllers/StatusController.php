@@ -24,41 +24,40 @@ class StatusController extends BaseController
             'data' => $this->StatusModel->getAllStatus(),
             'optionsJenisStatus' => $this->JenisStatusModel->getAllJenisStatus(),
         ];
+        // echo "<pre>";
+        // var_dump($data['data']);
+        // echo "</pre>";
+        // die;
         return view('v_template', $data);
     }
 
     public function store()
     {   
         if ($this->request->getMethod() === 'POST') {
-            echo "<pre>";
-            var_dump($this->request->getPost());
-            echo "</pre>";
-            // die;
-
             $rules = [
                 'jenis_status' => 'required|integer',
-                'code_status' => [
-                    'rules' => 'required|integer|is_unique[status.code_status,id_jenis_status,{id_jenis_status}]',
-                    'errors' => [
-                        'is_unique' => 'Code status sudah digunakan untuk jenis status ini.'
-                    ]
-                ],
+                // 'code_status' => [
+                //     'rules' => 'required|integer|is_unique[status.code_status,id_jenis_status,{id_jenis_status}]',
+                //     'errors' => [
+                //         'is_unique' => 'Code status sudah digunakan untuk jenis status ini.'
+                //     ]
+                // ],
+                'code_status' => 'required|integer',
                 'status' => 'required',
                 'deskripsi' => 'permit_empty|string'
             ];
 
             if (!$this->validate($rules)) {
-                echo "failed";die;
+                // echo "failed";die;
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
             }
-            // echo "success";die;
 
-
+            // Pengecekan duplikasi code status 
             $idJenisStatus = $this->request->getPost('jenis_status');
             $codeStatus = $this->request->getPost('code_status');
 
             if ($this->StatusModel->isCodeStatusExists($codeStatus, $idJenisStatus)) {
-                echo "failed_code_status";die;
+                // echo "failed111";die;
                 return redirect()->back()->withInput()->with('error', 'Code status sudah digunakan.');
             }
 
@@ -68,7 +67,11 @@ class StatusController extends BaseController
                 'status' => $this->request->getPost('status'),
                 'deskripsi' => $this->request->getPost('deskripsi')
             ];
-            // echo "success";die;
+
+            // echo "<pre>";
+            // var_dump($dataInsert);
+            // echo "</pre>";
+            // die;
             
 
             if ($this->StatusModel->createStatus($dataInsert)) {
@@ -76,7 +79,6 @@ class StatusController extends BaseController
             } else {
                 session()->setFlashdata('error', 'Gagal Menambahkan Data Status.');
             }
-            // return redirect()->to('/status')->with('message', 'Status berhasil ditambahkan.');
         } else {
             session()->setFlashdata('error', 'Gagal Menambahkan Input Data Status.');
         }
@@ -89,5 +91,60 @@ class StatusController extends BaseController
         $exists = $this->StatusModel->isCodeStatusExists($codeStatus, $idJenisStatus);
         
         return $this->response->setJSON(['exists' => $exists]);
+    }
+
+    public function update($id)
+    {
+        if ($this->request->getMethod() === 'POST' && ($id !== '' && !empty($id))) {
+            $rules = [
+                'jenis_status' => 'required|integer',
+                'code_status' => [
+                    'rules' => 'required|integer|is_unique[status.code_status,id_jenis_status,{id_jenis_status}]',
+                    'errors' => [
+                        'is_unique' => 'Code status sudah digunakan untuk jenis status ini.'
+                    ]
+                ],
+                'status' => 'required',
+                'deskripsi' => 'permit_empty|string'
+            ];
+
+             if (!$this->validate($rules)) {
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            }
+
+            $dataUpdate = [
+                'status' => $this->request->getPost('status'),
+                'deskripsi' => $this->request->getPost('deskripsi')
+            ];
+
+            if ($this->StatusModel->updateStatus($id, $dataUpdate)) {
+                session()->setFlashdata('success', 'Data Status Berhasil Diupdate.');
+            } else {
+                session()->setFlashdata('error', 'Gagal Mengupdate Data Status.');
+            }
+        } else {
+            if($this->request->getMethod() === 'POST') {
+                session()->setFlashdata('error', 'Gagal Menambahkan Input Data Status.');
+            } else {
+                session()->setFlashdata('error', 'Gagal! ID tidak ditemukan.');
+            }
+        }
+
+        return redirect()->to('status');
+    }
+
+    public function delete($id)
+    {
+        if ($id !== '' && !empty($id)) {
+            if ($this->StatusModel->deleteStatus($id)) {
+                session()->setFlashdata('success', 'Data Status Berhasil Dihapus.');
+            } else {
+                session()->setFlashdata('error', 'Gagal Menghapus Data Status.');
+            }
+        } else {
+            session()->setFlashdata('error', 'Gagal! ID tidak ditemukan.');
+        }
+
+        return redirect()->to('status');
     }
 }
