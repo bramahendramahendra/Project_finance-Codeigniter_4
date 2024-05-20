@@ -212,7 +212,7 @@
                         <label for="status">Status</label>
                         <select name="status" class="form-control select2" id="create_status" style="width: 100%;" required>
                             <?php foreach ($optionsStatus as $status): ?>
-                                <option value="<?= esc($status['id']); ?>"><?= esc($status['status']); ?></option>
+                                <option value="<?= esc($status['id']); ?>" <?= $status['id'] == $value['status'] ? 'selected' : '' ?>><?= esc($status['status']); ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -255,3 +255,14 @@
     </div>
     <!-- /.modal -->
 <?php } ?>
+
+<script>
+    $(function () {
+        $("#table-datatables").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#table-datatables_wrapper .col-md-6:eq(0)');
+
+        $('.select2').select2()
+    });
+</script>

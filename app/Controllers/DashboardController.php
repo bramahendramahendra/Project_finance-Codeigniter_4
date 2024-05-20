@@ -7,7 +7,7 @@ class DashboardController extends BaseController
     public function index(): string
     {
         $data = [
-            'judul' => 'Dashboard',
+            'judul' => 'Dashboard123',
             'menu' => 'dashboard',
             'page' => 'dashboard/v_dashboard',
         ];

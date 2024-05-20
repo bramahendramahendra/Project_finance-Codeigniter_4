@@ -59,5 +59,6 @@ abstract class BaseController extends Controller
 
         // Status 
         $this->statusKategoriTagihan = 5;
+        $this->statusNamaTagihan = 5;
     }
 }

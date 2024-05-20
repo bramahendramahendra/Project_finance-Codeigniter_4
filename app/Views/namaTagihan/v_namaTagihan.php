@@ -64,7 +64,10 @@
                             <tr>
                                 <td><?= $no++ ?></td>
                                 <td><?= $value['kategori'] ?></td>
+                                <td><?= $value['nama_tagihan'] ?></td>
                                 <td><?= $value['deskripsi'] ?></td>
+                                <td><?= format_rupiah($value['jumlah_tagihan']) ?></td>
+                                <td><?= $value['nama_status'] ?></td>
                                 <td> 
                                     <!-- <button class="btn btn-primary btn-sm" >
                                         <i class="fas fa-folder" >
@@ -178,7 +181,7 @@
                 </div>
                 <div class="form-group">
                     <label for="">Jumlah Tagihan</label>
-                    <input type="text" name="jumlah_tagihan" class="form-control" placeholder="Jumlah Tagihan" required>
+                    <input type="text" name="jumlah_tagihan" class="form-control jumlah_tagihan" placeholder="Jumlah Tagihan" required>
                 </div>
                 <div class="form-group">
                     <label for="status">Status</label>
@@ -219,7 +222,7 @@
                         <label for="kategori">Kategori</label>
                         <select name="kategori" class="form-control select2" id="create_kategori" style="width: 100%;" required>
                             <?php foreach ($optionsKategori as $kategori): ?>
-                                <option value="<?= esc($kategori['id']); ?>"><?= esc($kategori['kategori']); ?></option>
+                                <option value="<?= esc($kategori['id']); ?>" <?= $kategori['id'] == $value['id_kategori'] ? 'selected' : '' ?>><?= esc($kategori['kategori']); ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -231,15 +234,16 @@
                         <label for="deskripsi">Deskripsi</label>
                         <input type="text" name="deskripsi" value="<?= $value['deskripsi'] ?>" class="form-control" placeholder="Deskripsi" required>
                     </div>
+                    <?php  $formatted_value = isset($value['jumlah_tagihan']) ? format_rupiah($value['jumlah_tagihan']) : ''; ?>
                     <div class="form-group">
-                        <label for="">Jumlah Tagihan</label>
-                        <input type="text" name="jumlah_tagihan" class="form-control" placeholder="Jumlah Tagihan" required>
+                        <label for="jumlah_tagihan">Jumlah Tagihan</label>
+                        <input type="text" name="jumlah_tagihan" value="<?= $formatted_value ?>" class="form-control jumlah_tagihan" placeholder="Jumlah Tagihan" required>
                     </div>
                     <div class="form-group">
                         <label for="status">Status</label>
                         <select name="status" class="form-control select2" id="create_status" style="width: 100%;" required>
                             <?php foreach ($optionsStatus as $status): ?>
-                                <option value="<?= esc($status['id']); ?>">[ <?= esc($status['code_status']); ?> ] <?= esc($status['status']); ?></option>
+                                <option value="<?= esc($status['id']); ?>" <?= $status['id'] == $value['status'] ? 'selected' : '' ?>>[ <?= esc($status['code_status']); ?> ] <?= esc($status['status']); ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -282,3 +286,36 @@
     </div>
     <!-- /.modal -->
 <?php } ?>
+
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+<script>
+    $(function () {
+        $("#table-datatables").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#table-datatables_wrapper .col-md-6:eq(0)');
+
+        $('.select2').select2()
+    });
+
+    $('.jumlah_tagihan').on('keyup', function(e) {
+        $(this).val(formatRupiah($(this).val(), 'Rp '));
+    });
+
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
+    }
+   
+</script>

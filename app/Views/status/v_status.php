@@ -264,16 +264,25 @@
 <?php } ?>
 
 <script>
-function checkCodeStatus() {
-    var jenisStatus = document.getElementById('create_jenis_status').value;
-    var codeStatus = document.getElementById('create_code_status').value;
+    $(function () {
+        $("#table-datatables").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#table-datatables_wrapper .col-md-6:eq(0)');
 
-    fetch('<?= site_url('status/check_code_status') ?>/' + jenisStatus + '/' + codeStatus)
-        .then(response => response.json())
-        .then(data => {
-            if (data.exists) {
-                alert('Code status sudah digunakan.');
-            }
-        });
-}
+        $('.select2').select2()
+    });
+    
+    function checkCodeStatus() {
+        var jenisStatus = document.getElementById('create_jenis_status').value;
+        var codeStatus = document.getElementById('create_code_status').value;
+
+        fetch('<?= site_url('status/check_code_status') ?>/' + jenisStatus + '/' + codeStatus)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    alert('Code status sudah digunakan.');
+                }
+            });
+    }
 </script>

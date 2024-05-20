@@ -236,3 +236,14 @@
     </div>
     <!-- /.modal -->
 <?php } ?>
+
+<script>
+    $(function () {
+        $("#table-datatables").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#table-datatables_wrapper .col-md-6:eq(0)');
+
+        $('.select2').select2()
+    });
+</script>

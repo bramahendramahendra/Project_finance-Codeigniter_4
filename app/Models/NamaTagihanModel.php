@@ -48,10 +48,10 @@ class NamaTagihanModel extends Model
         $this->select('
             nama_tagihan.*, 
             kategori_tagihan.kategori as kategori,
-            status.status as status,
+            status.status as nama_status,
         ');
         $this->join('kategori_tagihan', 'kategori_tagihan.id = nama_tagihan.id_kategori');
-        $this->join('status', 'status.code_status = nama_tagihan.status');
+        $this->join('status', 'status.id = nama_tagihan.status');
         return $this->findAll();
     }
 
