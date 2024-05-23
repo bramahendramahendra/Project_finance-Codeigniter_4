@@ -4,10 +4,12 @@
             <div class="card-header">
                 <h5 class="card-title">Data <?=$judul?></h5>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add-data">
-                        <i class="fas fa-plus-circle"></i>
-                        Tambah <?=$judul?>
-                    </button>
+                    <?php if(count($data) < 1): ?>
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add-data">
+                            <i class="fas fa-plus-circle"></i>
+                            Tambah <?=$judul?>
+                        </button>
+                    <?php endif; ?>
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
                     </button>
@@ -49,11 +51,8 @@
                     <thead>
                         <tr>
                             <th width="5%">#</th>
-                            <th>Kategori</th>
-                            <th>Nama Tagihan</th>
-                            <th>Deskripsi</th>
-                            <th>Jumlah Tagihan</th>
-                            <th>Status</th>
+                            <th>Code Awal</th>
+                            <th>Code Akhir</th>
                             <th width="15%">Aksi</th>
                         </tr>
                     </thead>
@@ -63,26 +62,18 @@
                         foreach ($data as $key => $value) { ?>
                             <tr>
                                 <td><?= $no++ ?></td>
-                                <td><?= $value['kategori'] ?></td>
-                                <td><?= $value['nama_tagihan'] ?></td>
-                                <td><?= $value['deskripsi'] ?></td>
-                                <td><?= format_rupiah($value['jumlah_tagihan']) ?></td>
-                                <td><?= $value['nama_status'] ?></td>
+                                <td><?= $value['code_awal'] ?></td>
+                                <td><?= $value['code_akhir'] ?></td>
                                 <td> 
-                                    <!-- <button class="btn btn-primary btn-sm" >
-                                        <i class="fas fa-folder" >
-                                        </i>
-                                        View
-                                    </button> -->
-                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit-data<?= $value['id'] ?>">
+                                    <button class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#edit-data<?= $value['id'] ?>">
                                         <i class="fas fa-pencil-alt">
                                         </i>
                                         Edit
                                     </button>
-                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-data<?= $value['id'] ?>">
+                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#reset-data<?= $value['id'] ?>">
                                         <i class="fas fa-trash">
                                         </i>
-                                        Delete
+                                        Reset
                                     </button>
                                 </td>
                             </tr>
@@ -91,11 +82,8 @@
                     <tfoot>
                         <tr>
                             <th>#</th>
-                            <th>Kategori</th>
-                            <th>Nama Tagihan</th>
-                            <th>Deskripsi</th>
-                            <th>Jumlah Tagihan</th>
-                            <th>Status</th>
+                            <th>Code Awal</th>
+                            <th>Code Akhir</th>
                             <th>Aksi</th>
                         </tr>
                     </tfoot>
@@ -161,35 +149,15 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <?php echo form_open('nama_tagihan/store') ?>
+            <?php echo form_open('code_tagihan/store') ?>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="kategori">Kategori</label>
-                    <select name="kategori" class="form-control select2" id="create_kategori" style="width: 100%;" required>
-                        <?php foreach ($optionsKategori as $kategori): ?>
-                            <option value="<?= esc($kategori['id']); ?>"><?= esc($kategori['kategori']); ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <label for="">Code Awal</label>
+                    <input type="text" name="code_awal" class="form-control" placeholder="Code Awal" required>
                 </div>
                 <div class="form-group">
-                    <label for="nama_tagihan">Nama Tagihan</label>
-                    <input type="text" name="nama_tagihan" class="form-control" placeholder="Nama Tagihan" required>
-                </div>
-                <div class="form-group">
-                    <label for="deskripsi">Deskripsi</label>
-                    <input type="text" name="deskripsi" class="form-control" placeholder="Deskripsi" required>
-                </div>
-                <div class="form-group">
-                    <label for="">Jumlah Tagihan</label>
-                    <input type="text" name="jumlah_tagihan" class="form-control jumlah_tagihan" placeholder="Jumlah Tagihan" required>
-                </div>
-                <div class="form-group">
-                    <label for="status">Status</label>
-                    <select name="status" class="form-control select2" id="create_status" style="width: 100%;" required>
-                        <?php foreach ($optionsStatus as $status): ?>
-                            <option value="<?= esc($status['id']); ?>">[ <?= esc($status['code_status']); ?> ] <?= esc($status['status']); ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <label for="">Code Akhir</label>
+                    <input type="text" name="code_akhir" class="form-control" placeholder="Code Akhir" required>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
@@ -216,36 +184,15 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <?php echo form_open('nama_tagihan/update/'.$value['id']) ?>
+                <?php echo form_open('code_tagihan/update/'.$value['id']) ?>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="kategori">Kategori</label>
-                        <select name="kategori" class="form-control select2" id="create_kategori" style="width: 100%;" required>
-                            <?php foreach ($optionsKategori as $kategori): ?>
-                                <option value="<?= esc($kategori['id']); ?>" <?= $kategori['id'] == $value['id_kategori'] ? 'selected' : '' ?>><?= esc($kategori['kategori']); ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <label for="">Code Awal</label>
+                        <input type="text" name="code_awal" value="<?= $value['code_awal'] ?>" class="form-control" placeholder="Code Awal" required>
                     </div>
                     <div class="form-group">
-                        <label for="nama_tagihan">Nama Tagihan</label>
-                        <input type="text" name="nama_tagihan" value="<?= $value['nama_tagihan'] ?>" class="form-control" placeholder="Nama Tagihan" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="deskripsi">Deskripsi</label>
-                        <input type="text" name="deskripsi" value="<?= $value['deskripsi'] ?>" class="form-control" placeholder="Deskripsi" required>
-                    </div>
-                    <?php  $formatted_value = isset($value['jumlah_tagihan']) ? format_rupiah($value['jumlah_tagihan']) : ''; ?>
-                    <div class="form-group">
-                        <label for="jumlah_tagihan">Jumlah Tagihan</label>
-                        <input type="text" name="jumlah_tagihan" value="<?= $formatted_value ?>" class="form-control jumlah_tagihan" placeholder="Jumlah Tagihan" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select name="status" class="form-control select2" id="create_status" style="width: 100%;" required>
-                            <?php foreach ($optionsStatus as $status): ?>
-                                <option value="<?= esc($status['id']); ?>" <?= $status['id'] == $value['status'] ? 'selected' : '' ?>>[ <?= esc($status['code_status']); ?> ] <?= esc($status['status']); ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <label for="">Code Akhir</label>
+                        <input type="text" name="code_akhir" value="<?= $value['code_akhir'] ?>" class="form-control" placeholder="Code Akhir" required>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -263,21 +210,21 @@
 
 <!-- Modal Hapus Data -->  
 <?php foreach ($data as $key => $value) { ?>
-    <div class="modal fade" id="delete-data<?= $value['id'] ?>">
+    <div class="modal fade" id="reset-data<?= $value['id'] ?>">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Delete Data <?= $judul ?></h4>
+                    <h4 class="modal-title">Reset Data <?= $judul ?></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Apakah Anda Yakin Hapus  <b><?= $value['nama_tagihan'] ?></b>
+                    Apakah Anda Yakin Reset Code Tagihan</b>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    <a href="<?= base_url('nama_tagihan/delete/'.$value['id']) ?>" class="btn btn-danger btn-flat">Delete</a>
+                    <a href="<?= base_url('code_tagihan/reset/'.$value['id']) ?>" class="btn btn-danger btn-flat">Reset</a>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -287,7 +234,6 @@
     <!-- /.modal -->
 <?php } ?>
 
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
 <script>
     $(function () {
         $("#table-datatables").DataTable({
@@ -297,25 +243,4 @@
 
         $('.select2').select2()
     });
-
-    $('.jumlah_tagihan').on('keyup', function(e) {
-        $(this).val(formatRupiah($(this).val(), 'Rp '));
-    });
-
-    function formatRupiah(angka, prefix) {
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-            split = number_string.split(','),
-            sisa = split[0].length % 3,
-            rupiah = split[0].substr(0, sisa),
-            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
-        }
-
-        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-        return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
-    }
-   
 </script>

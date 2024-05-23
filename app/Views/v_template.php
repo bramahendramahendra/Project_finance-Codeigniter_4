@@ -289,6 +289,14 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="<?= base_url('plan_tagihan') ?>" class="nav-link <?= $menu == 'planTagihan' ? 'active' : '' ?>">
+                <i class="nav-icon far fa-image"></i>
+                <p>
+                    Plan Tagihan
+                </p>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="<?= base_url('jenis_status') ?>" class="nav-link <?= $menu == 'jenisStatus' ? 'active' : '' ?>">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
@@ -297,12 +305,21 @@
                 </p>
                 </a>
             </li>
+           
             <li class="nav-item">
                 <a href="<?= base_url('status') ?>" class="nav-link <?= $menu == 'status' ? 'active' : '' ?>">
                 <i class="nav-icon far fa-calendar-alt"></i>
                 <p>
                     Status
                     <!-- <span class="badge badge-info right">2</span> -->
+                </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="<?= base_url('code_tagihan') ?>" class="nav-link <?= $menu == 'codeTagihan' ? 'active' : '' ?>">
+                <i class="nav-icon fas fa-columns"></i>
+                <p>
+                    Code Tagihan
                 </p>
                 </a>
             </li>
@@ -556,22 +573,8 @@
                 </ul>
             </li>
             <li class="nav-header">EXAMPLES</li>
-            <li class="nav-item">
-                <a href="pages/gallery.html" class="nav-link">
-                <i class="nav-icon far fa-image"></i>
-                <p>
-                    Gallery
-                </p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="pages/kanban.html" class="nav-link">
-                <i class="nav-icon fas fa-columns"></i>
-                <p>
-                    Kanban Board
-                </p>
-                </a>
-            </li>
+           
+           
             <li class="nav-item">
                 <a href="#" class="nav-link">
                 <i class="nav-icon far fa-envelope"></i>

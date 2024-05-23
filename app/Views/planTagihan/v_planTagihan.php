@@ -4,10 +4,6 @@
             <div class="card-header">
                 <h5 class="card-title">Data <?=$judul?></h5>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add-data">
-                        <i class="fas fa-plus-circle"></i>
-                        Tambah <?=$judul?>
-                    </button>
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
                     </button>
@@ -51,9 +47,10 @@
                             <th width="5%">#</th>
                             <th>Kategori</th>
                             <th>Nama Tagihan</th>
-                            <th>Deskripsi</th>
                             <th>Jumlah Tagihan</th>
-                            <th>Status</th>
+                            <th>Plan</th>
+                            <th>Jangka Waktu</th>
+                            <th>Cicilan</th>
                             <th width="15%">Aksi</th>
                         </tr>
                     </thead>
@@ -65,24 +62,28 @@
                                 <td><?= $no++ ?></td>
                                 <td><?= $value['kategori'] ?></td>
                                 <td><?= $value['nama_tagihan'] ?></td>
-                                <td><?= $value['deskripsi'] ?></td>
                                 <td><?= format_rupiah($value['jumlah_tagihan']) ?></td>
-                                <td><?= $value['nama_status'] ?></td>
-                                <td> 
-                                    <!-- <button class="btn btn-primary btn-sm" >
-                                        <i class="fas fa-folder" >
+                                <td>-</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" >
+                                        <i class="fas fa-folder">
                                         </i>
-                                        View
-                                    </button> -->
+                                        Detail Plan
+                                    </button>
+                                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#add-data<?= $value['id'] ?>">
+                                        <i class="fas fa-plus-circle">
+                                        </i>
+                                        Tambah Plan
+                                    </button>
                                     <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit-data<?= $value['id'] ?>">
                                         <i class="fas fa-pencil-alt">
                                         </i>
-                                        Edit
+                                        Edit Plan
                                     </button>
-                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-data<?= $value['id'] ?>">
-                                        <i class="fas fa-trash">
+                                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#delete-data<?= $value['id'] ?>">
+                                        <i class="fas fa-exchange-alt">
                                         </i>
-                                        Delete
+                                        Ganti Plan
                                     </button>
                                 </td>
                             </tr>
@@ -93,9 +94,9 @@
                             <th>#</th>
                             <th>Kategori</th>
                             <th>Nama Tagihan</th>
-                            <th>Deskripsi</th>
                             <th>Jumlah Tagihan</th>
-                            <th>Status</th>
+                            <th>Plan</th>
+                            <th>Jangka Waktu</th>
                             <th>Aksi</th>
                         </tr>
                     </tfoot>
@@ -150,107 +151,70 @@
 </div>
 <!-- /.row -->
 
+
 <!-- Modal  -->
 <!-- Modal Add Data -->  
-<div class="modal fade" id="add-data">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Add Data <?= $judul ?></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <?php echo form_open('nama_tagihan/store') ?>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="kategori">Kategori</label>
-                    <select name="kategori" class="form-control select2" id="create_kategori" style="width: 100%;" required>
-                        <?php foreach ($optionsKategori as $kategori): ?>
-                            <option value="<?= esc($kategori['id']); ?>"><?= esc($kategori['kategori']); ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="nama_tagihan">Nama Tagihan</label>
-                    <input type="text" name="nama_tagihan" class="form-control" placeholder="Nama Tagihan" required>
-                </div>
-                <div class="form-group">
-                    <label for="deskripsi">Deskripsi</label>
-                    <input type="text" name="deskripsi" class="form-control" placeholder="Deskripsi" required>
-                </div>
-                <div class="form-group">
-                    <label for="">Jumlah Tagihan</label>
-                    <input type="text" name="jumlah_tagihan" class="form-control jumlah_tagihan" placeholder="Jumlah Tagihan" required>
-                </div>
-                <div class="form-group">
-                    <label for="status">Status</label>
-                    <select name="status" class="form-control select2" id="create_status" style="width: 100%;" required>
-                        <?php foreach ($optionsStatus as $status): ?>
-                            <option value="<?= esc($status['id']); ?>">[ <?= esc($status['code_status']); ?> ] <?= esc($status['status']); ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary btn-flat">Save</button>
-            </div>
-            <?php echo form_close() ?>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-
-<!-- Modal Edit Data -->  
 <?php foreach ($data as $key => $value) { ?>
-    <div class="modal fade" id="edit-data<?= $value['id'] ?>">
-        <div class="modal-dialog">
+    <div class="modal fade" id="add-data<?= $value['id'] ?>">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Data <?= $judul ?></h4>
+                    <h4 class="modal-title">Add Data <?= $judul ?></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <?php echo form_open('nama_tagihan/update/'.$value['id']) ?>
+                <?php echo form_open('nama_tagihan/store') ?>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="kategori">Kategori</label>
-                        <select name="kategori" class="form-control select2" id="create_kategori" style="width: 100%;" required>
-                            <?php foreach ($optionsKategori as $kategori): ?>
-                                <option value="<?= esc($kategori['id']); ?>" <?= $kategori['id'] == $value['id_kategori'] ? 'selected' : '' ?>><?= esc($kategori['kategori']); ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <input type="text" name="kategori" class="form-control" value="<?= $value['kategori'] ?>" placeholder="Kategori" readonly>
                     </div>
                     <div class="form-group">
                         <label for="nama_tagihan">Nama Tagihan</label>
-                        <input type="text" name="nama_tagihan" value="<?= $value['nama_tagihan'] ?>" class="form-control" placeholder="Nama Tagihan" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="deskripsi">Deskripsi</label>
-                        <input type="text" name="deskripsi" value="<?= $value['deskripsi'] ?>" class="form-control" placeholder="Deskripsi" required>
+                        <input type="text" name="nama_tagihan" class="form-control" value="<?= $value['nama_tagihan'] ?>" placeholder="Nama Tagihan" readonly>
                     </div>
                     <?php  $formatted_value = isset($value['jumlah_tagihan']) ? format_rupiah($value['jumlah_tagihan']) : ''; ?>
                     <div class="form-group">
                         <label for="jumlah_tagihan">Jumlah Tagihan</label>
-                        <input type="text" name="jumlah_tagihan" value="<?= $formatted_value ?>" class="form-control jumlah_tagihan" placeholder="Jumlah Tagihan" required>
+                        <input type="text" name="jumlah_tagihan" class="form-control jumlah_tagihan" value="<?= $formatted_value ?>" placeholder="Jumlah Tagihan" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="status">Status</label>
-                        <select name="status" class="form-control select2" id="create_status" style="width: 100%;" required>
-                            <?php foreach ($optionsStatus as $status): ?>
-                                <option value="<?= esc($status['id']); ?>" <?= $status['id'] == $value['status'] ? 'selected' : '' ?>>[ <?= esc($status['code_status']); ?> ] <?= esc($status['status']); ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <label for="jumlah_tagihan">Sisa Jumlah Tagihan</label>
+                        <input type="text" name="sisa_jumlah_tagihan" class="form-control jumlah_tagihan" value="<?= $formatted_value ?>" placeholder="Sisa Jumlah Tagihan" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="plan">Plan</label>
+                        <input type="text" name="plan" class="form-control"  placeholder="Plan" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="jangka_waktu">Jangka Waktu</label>
+                        <input type="text" name="plan" class="form-control" placeholder="Jangka Waktu" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cicilan">Cicilan</label>
+                        <input type="text" name="plan" class="form-control" placeholder="Cicilan" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cicilan_dengan_bunga">Cicilan dengan Bunga</label>
+                        <input type="text" name="plan" class="form-control" placeholder="Cicilan dengan Bunga" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pembulatan_cicilan">Pembulatan Cicilan</label>
+                        <input type="text" name="plan" class="form-control" placeholder="Pembulatan Cicilan" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="total_tagihan">Total Tagihan</label>
+                        <input type="text" name="plan" class="form-control" placeholder="Total Tagihan" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="total_kelebihan_tagihan">Total kelebihan tagihan</label>
+                        <input type="text" name="plan" class="form-control" placeholder="Total lebih tagihan" required>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-warning btn-flat">Save</button>
+                    <button type="submit" class="btn btn-primary btn-flat">Save</button>
                 </div>
                 <?php echo form_close() ?>
             </div>
@@ -261,33 +225,6 @@
     <!-- /.modal -->
 <?php } ?>
 
-<!-- Modal Hapus Data -->  
-<?php foreach ($data as $key => $value) { ?>
-    <div class="modal fade" id="delete-data<?= $value['id'] ?>">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Delete Data <?= $judul ?></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Apakah Anda Yakin Hapus  <b><?= $value['nama_tagihan'] ?></b>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    <a href="<?= base_url('nama_tagihan/delete/'.$value['id']) ?>" class="btn btn-danger btn-flat">Delete</a>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
-<?php } ?>
-
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
 <script>
     $(function () {
         $("#table-datatables").DataTable({
@@ -297,25 +234,4 @@
 
         $('.select2').select2()
     });
-
-    $('.jumlah_tagihan').on('keyup', function(e) {
-        $(this).val(formatRupiah($(this).val(), 'Rp '));
-    });
-
-    function formatRupiah(angka, prefix) {
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-            split = number_string.split(','),
-            sisa = split[0].length % 3,
-            rupiah = split[0].substr(0, sisa),
-            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
-        }
-
-        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-        return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
-    }
-   
 </script>
