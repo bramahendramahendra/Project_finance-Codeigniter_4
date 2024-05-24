@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use App\Models\CodeTagihanModel;
 
 class NamaTagihanModel extends Model
 {
@@ -12,7 +13,7 @@ class NamaTagihanModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_kategori', 'nama_tagihan', 'deskripsi', 'jumlah_tagihan', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields    = ['id_kategori', 'code', 'nama_tagihan', 'deskripsi', 'jumlah_tagihan', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -44,6 +45,47 @@ class NamaTagihanModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    protected function generateCode()
+    {
+        $CodeTagihanModel = new CodeTagihanModel();
+        $CodeTagihanData = $CodeTagihanModel->find(1);
+        $currentCodeAwal = $CodeTagihanData['code_awal'];
+        $currentCodeAkhir = $CodeTagihanData['code_akhir'];
+
+        // Generate new code
+        $newCode = $currentCodeAwal . $currentCodeAkhir;
+
+        // Update code_first and code_last
+        if ($currentCodeAkhir < 9) {
+            $currentCodeAkhir++;
+        } else {
+            $currentCodeAkhir++;
+            if ($currentCodeAkhir == 10) {
+                $currentCodeAkhir = 0;
+                if ($currentCodeAwal < 'Z') {
+                    $currentCodeAwal = chr(ord($currentCodeAwal) + 1);
+                } else {
+                    $currentCodeAwal = 'A';
+                    $currentCodeAkhir = 10;
+                }
+            } elseif ($currentCodeAkhir % 10 == 0) {
+                if ($currentCodeAwal < 'Z') {
+                    $currentCodeAwal = chr(ord($currentCodeAwal) + 1);
+                } else {
+                    $currentCodeAwal = 'A';
+                }
+            }
+        }
+
+        // Update the code table
+        $CodeTagihanModel->update(1, [
+            'code_awal' => $currentCodeAwal,
+            'code_akhir' => $currentCodeAkhir
+        ]);
+
+        return $newCode;
+    }
+
     public function getAllData() {
         $this->select('
             nama_tagihan.*, 
@@ -69,6 +111,14 @@ class NamaTagihanModel extends Model
     public function createData($data) 
     {
         $this->db->transStart();
+        $code = $this->generateCode();
+        $data['code'] = $code;
+
+        // echo"<pre>";
+        // var_dump($code);
+        // var_dump($data);
+        // echo"</pre>";
+        // die;
         if (!$this->insert($data)) {
             $this->db->transRollback();
             return false;

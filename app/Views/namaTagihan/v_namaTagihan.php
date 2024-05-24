@@ -49,6 +49,7 @@
                     <thead>
                         <tr>
                             <th width="5%">#</th>
+                            <th>Code</th>
                             <th>Kategori</th>
                             <th>Nama Tagihan</th>
                             <th>Deskripsi</th>
@@ -63,6 +64,7 @@
                         foreach ($data as $key => $value) { ?>
                             <tr>
                                 <td><?= $no++ ?></td>
+                                <td><?= $value['code'] ?></td>
                                 <td><?= $value['kategori'] ?></td>
                                 <td><?= $value['nama_tagihan'] ?></td>
                                 <td><?= $value['deskripsi'] ?></td>
@@ -91,6 +93,7 @@
                     <tfoot>
                         <tr>
                             <th>#</th>
+                            <th>Code</th>
                             <th>Kategori</th>
                             <th>Nama Tagihan</th>
                             <th>Deskripsi</th>

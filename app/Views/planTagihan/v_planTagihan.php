@@ -45,6 +45,7 @@
                     <thead>
                         <tr>
                             <th width="5%">#</th>
+                            <th>Code</th>
                             <th>Kategori</th>
                             <th>Nama Tagihan</th>
                             <th>Jumlah Tagihan</th>
@@ -60,6 +61,7 @@
                         foreach ($data as $key => $value) { ?>
                             <tr>
                                 <td><?= $no++ ?></td>
+                                <td><?= $value['code'] ?></td>
                                 <td><?= $value['kategori'] ?></td>
                                 <td><?= $value['nama_tagihan'] ?></td>
                                 <td><?= format_rupiah($value['jumlah_tagihan']) ?></td>
@@ -92,11 +94,13 @@
                     <tfoot>
                         <tr>
                             <th>#</th>
+                            <th>Code</th>
                             <th>Kategori</th>
                             <th>Nama Tagihan</th>
                             <th>Jumlah Tagihan</th>
                             <th>Plan</th>
                             <th>Jangka Waktu</th>
+                            <th>Cicilan</th>
                             <th>Aksi</th>
                         </tr>
                     </tfoot>
@@ -167,6 +171,10 @@
                 <?php echo form_open('nama_tagihan/store') ?>
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="code">Code</label>
+                        <input type="text" name="code" class="form-control" value="<?= $value['code'] ?>" placeholder="Code" readonly>
+                    </div>
+                    <div class="form-group">
                         <label for="kategori">Kategori</label>
                         <input type="text" name="kategori" class="form-control" value="<?= $value['kategori'] ?>" placeholder="Kategori" readonly>
                     </div>
@@ -178,6 +186,10 @@
                     <div class="form-group">
                         <label for="jumlah_tagihan">Jumlah Tagihan</label>
                         <input type="text" name="jumlah_tagihan" class="form-control jumlah_tagihan" value="<?= $formatted_value ?>" placeholder="Jumlah Tagihan" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="jumlah_pembayaran_tagihan">Jumlah Pembayaran Tagihan</label>
+                        <input type="text" name="jumlah_pembayaran_tagihan" class="form-control jumlah_tagihan" value="<?= $formatted_value ?>" placeholder="Jumlah Pembayaran Tagihan" readonly>
                     </div>
                     <div class="form-group">
                         <label for="jumlah_tagihan">Sisa Jumlah Tagihan</label>
