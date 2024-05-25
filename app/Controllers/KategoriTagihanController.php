@@ -9,8 +9,6 @@ use App\Models\StatusModel;
 
 class KategoriTagihanController extends BaseController
 {
-    protected $KategoriTagihanModel;
-
     public function __construct() 
     {
         $this->KategoriTagihanModel = new KategoriTagihanModel();
@@ -27,11 +25,6 @@ class KategoriTagihanController extends BaseController
             'optionsStatus' => $this->StatusModel->getStatusByIdJenisStatus($this->statusKategoriTagihan),
         ];
 
-        // echo "<pre>";
-        // var_dump($data['data']);
-        // echo "</pre>";
-        // die;
-
         return view('v_template', $data);
     }
 
@@ -39,15 +32,34 @@ class KategoriTagihanController extends BaseController
     {
         if ($this->request->getMethod() === 'POST') {
             $rules = [
-                'kategori' => 'required',
+                'kategori'  => 'required',
                 'deskripsi' => 'permit_empty|string',
-                'status' => 'required|integer',
+                'status'    => 'required|integer',
             ];
+
+            $messages = [
+                'kategori' => [
+                    'required' => 'Kategori harus diisi.'
+                ],
+                'deskripsi' => [
+                    'string' => 'Deskripsi harus berupa string.'
+                ],
+                'status' => [
+                    'required' => 'Status harus diisi.',
+                    'integer' => 'Status harus berupa angka.'
+                ]
+            ];
+
+            $this->validation->setRules($rules, $messages);
+
+            if (!$this->validate($rules)) {
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            }
             
             $dataInsert = [
-                'kategori' => $this->request->getPost('kategori'),
+                'kategori'  => $this->request->getPost('kategori'),
                 'deskripsi' => $this->request->getPost('deskripsi'),
-                'status' => $this->request->getPost('status'),
+                'status'    => $this->request->getPost('status'),
             ];
 
             if ($this->KategoriTagihanModel->createKategori($dataInsert)) {
@@ -66,15 +78,34 @@ class KategoriTagihanController extends BaseController
     {
         if ($this->request->getMethod() === 'POST' && ($id !== '' && !empty($id))) {
             $rules = [
-                'kategori' => 'required',
+                'kategori'  => 'required',
                 'deskripsi' => 'permit_empty|string',
-                'status' => 'required|integer',
+                'status'    => 'required|integer',
             ];
 
+            $messages = [
+                'kategori' => [
+                    'required' => 'Kategori harus diisi.'
+                ],
+                'deskripsi' => [
+                    'string' => 'Deskripsi harus berupa string.'
+                ],
+                'status' => [
+                    'required' => 'Status harus diisi.',
+                    'integer' => 'Status harus berupa angka.'
+                ]
+            ];
+
+            $this->validation->setRules($rules, $messages);
+
+            if (!$this->validate($rules)) {
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            }
+
             $dataUpdate = [
-                'kategori' => $this->request->getPost('kategori'),
+                'kategori'  => $this->request->getPost('kategori'),
                 'deskripsi' => $this->request->getPost('deskripsi'),
-                'status' => $this->request->getPost('status'),
+                'status'    => $this->request->getPost('status'),
             ];
 
             if ($this->KategoriTagihanModel->updateKategori($id, $dataUpdate)) {

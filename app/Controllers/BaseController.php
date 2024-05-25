@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Config\Services;
 
 /**
  * Class BaseController
@@ -36,6 +37,7 @@ abstract class BaseController extends Controller
      * @var list<string>
      */
     protected $helpers = ['form', 'url'];
+    protected $validation;
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -56,6 +58,9 @@ abstract class BaseController extends Controller
         // E.g.: $this->session = \Config\Services::session();
 
         // Inisialisasi variabel
+
+        // Initialize validation service
+        $this->validation = Services::validation();
 
         // Status 
         $this->statusKategoriTagihan = 5;

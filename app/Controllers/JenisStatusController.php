@@ -28,17 +28,28 @@ class JenisStatusController extends BaseController
     {
         if ($this->request->getMethod() === 'POST') {
             $rules = [
-                'jenis_status' => 'required',
-                'deskripsi' => 'permit_empty|string'
+                'jenis_status'  => 'required',
+                'deskripsi'     => 'permit_empty|string'
             ];
+
+            $messages = [
+                'jenis_status' => [
+                    'required' => 'Jenis Status harus diisi.'
+                ],
+                'deskripsi' => [
+                    'string' => 'Deskripsi harus berupa string.'
+                ],
+            ];
+
+            $this->validation->setRules($rules, $messages);
 
             if (!$this->validate($rules)) {
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
             }
 
             $dataInsert = [
-                'jenis_status' => $this->request->getPost('jenis_status'),
-                'deskripsi' => $this->request->getPost('deskripsi')
+                'jenis_status'  => $this->request->getPost('jenis_status'),
+                'deskripsi'     => $this->request->getPost('deskripsi')
             ];
         
             if ($this->JenisStatusModel->createJenisStatus($dataInsert)) {
@@ -57,17 +68,28 @@ class JenisStatusController extends BaseController
     {
         if ($this->request->getMethod() === 'POST' && ($id !== '' && !empty($id))) {
             $rules = [
-                'jenis_status' => 'required',
-                'deskripsi' => 'permit_empty|string'
+                'jenis_status'  => 'required',
+                'deskripsi'     => 'permit_empty|string'
             ];
+
+            $messages = [
+                'jenis_status' => [
+                    'required' => 'Jenis Status harus diisi.'
+                ],
+                'deskripsi' => [
+                    'string' => 'Deskripsi harus berupa string.'
+                ],
+            ];
+
+            $this->validation->setRules($rules, $messages);
 
             if (!$this->validate($rules)) {
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
             }
 
             $dataUpdate = [
-                'jenis_status' => $this->request->getPost('jenis_status'),
-                'deskripsi' => $this->request->getPost('deskripsi')
+                'jenis_status'  => $this->request->getPost('jenis_status'),
+                'deskripsi'     => $this->request->getPost('deskripsi')
             ];
 
             if ($this->JenisStatusModel->updateJenisStatus($id, $dataUpdate)) {

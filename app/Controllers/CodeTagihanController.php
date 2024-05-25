@@ -29,8 +29,21 @@ class CodeTagihanController extends BaseController
         if ($this->request->getMethod() === 'POST') {
             $rules = [
                 'code_awal' => 'required|string',
-                'code_akhir' => 'required'
+                'code_akhir' => 'required|integer'
             ];
+
+            $messages = [
+                'code_awal' => [
+                    'required' => 'Code Awal harus diisi.',
+                    'string' => 'Code Awal harus berupa string.'
+                ],
+                'code_akhir' => [
+                    'required' => 'Code Akhir harus diisi.',
+                    'integer' => 'Code Akhir harus berupa angka.'
+                ],
+            ];
+            
+            $this->validation->setRules($rules, $messages);
 
             if (!$this->validate($rules)) {
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());

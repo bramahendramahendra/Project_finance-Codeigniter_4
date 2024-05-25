@@ -12,7 +12,7 @@ class SummaryTagihanModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_plan_tagihan', 'jumlah_debit', 'jumlah_debit_tanpa_bunga', 'jumlah_kredit', 'sisa_tagihan', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields    = ['id_plan_tagihan', 'jumlah_debit', 'jumlah_debit_tanpa_bunga', 'jumlah_kredit', 'sisa_tagihan', 'sisa_tagihan_tanpa_bunga', 'created_at', 'updated_at', 'deleted_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

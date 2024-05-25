@@ -38,8 +38,7 @@ class NamaTagihanController extends BaseController
     {
         // echo 'asda';die;
         if ($this->request->getMethod() === 'POST') {
-            helper(['form', 'url']);
-            $validation =  \Config\Services::validation();
+            // $validation =  \Config\Services::validation();
 
             $rules = [
                 'kategori' => 'required|integer',
@@ -50,30 +49,39 @@ class NamaTagihanController extends BaseController
             ];
 
             $messages = [
+                'kategori' => [
+                    'required' => 'Kategori harus diisi.',
+                    'integer' => 'Kategori harus berupa angka.'
+                ],
+                'nama_tagihan' => [
+                    'required' => 'Nama Tagihan harus diisi.',
+                ],
+                'deskripsi' => [
+                    'string' => 'Deskripsi harus berupa string.'
+                ],
                 'jumlah_tagihan' => [
-                    'validate_rupiah' => 'Format Jumlah Tagihan tidak valid.'
+                    'required' => 'Jumlah Tagihan harus diisi.',
+                    'validate_rupiah' => 'Format Rupiah Jumlah Tagihan dengan Bunga tidak valid.'
+                ],
+                'status' => [
+                    'required' => 'Status harus diisi.',
+                    'integer' => 'Status harus berupa angka.'
                 ]
             ];
 
-            // echo"<pre>";
-            // var_dump($this->request->getPost());
-            // echo"</pre>";
-            // die;
+            $this->validation->setRules($rules, $messages);
+            // $validation->setRules($rules, $messages);
 
             if (!$this->validate($rules)) {
-                // echo "gagal";die;
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
             }
-            // echo "benar";
-
-           
 
             $dataInsert = [
-                'id_kategori' => $this->request->getPost('kategori'),
-                'nama_tagihan' => $this->request->getPost('nama_tagihan'),
-                'deskripsi' => $this->request->getPost('deskripsi'),
-                'jumlah_tagihan' => $this->parse_rupiah($this->request->getPost('jumlah_tagihan')),
-                'status' => $this->request->getPost('status')
+                'id_kategori'       => $this->request->getPost('kategori'),
+                'nama_tagihan'      => $this->request->getPost('nama_tagihan'),
+                'deskripsi'         => $this->request->getPost('deskripsi'),
+                'jumlah_tagihan'    => $this->parse_rupiah($this->request->getPost('jumlah_tagihan')),
+                'status'            => $this->request->getPost('status')
             ];
             // echo"<pre>";
             // var_dump($dataInsert);
@@ -92,21 +100,6 @@ class NamaTagihanController extends BaseController
         return redirect()->to('nama_tagihan');
     }
 
-    // public function validate_rupiah($str)
-    // {
-    //     if (preg_match('/^Rp\s*[0-9]+(.[0-9]{3})*(,[0-9]{0,2})?$/', $str)) {
-    //         return TRUE;
-    //     } else {
-    //         $this->validator->setError('jumlah_tagihan', 'Format Jumlah Tagihan tidak valid.');
-    //         return FALSE;
-    //     }
-    // }
-
-    private function parse_rupiah($rupiah)
-    {
-        $number = preg_replace('/[^0-9]/', '', $rupiah);
-        return (int)$number;
-    }
 
     public function update($id)
     {
@@ -118,6 +111,29 @@ class NamaTagihanController extends BaseController
                 'jumlah_tagihan' => 'required|integer',
                 'status' => 'required|integer',
             ];
+
+            $messages = [
+                'kategori' => [
+                    'required' => 'Kategori harus diisi.',
+                    'integer' => 'Kategori harus berupa angka.'
+                ],
+                'nama_tagihan' => [
+                    'required' => 'Nama Tagihan harus diisi.',
+                ],
+                'deskripsi' => [
+                    'string' => 'Deskripsi harus berupa angka.'
+                ],
+                'jumlah_tagihan' => [
+                    'required' => 'Jumlah Tagihan harus diisi.',
+                    'validate_rupiah' => 'Format Rupiah Jumlah Tagihan dengan Bunga tidak valid.'
+                ],
+                'status' => [
+                    'required' => 'Status harus diisi.',
+                    'integer' => 'Status harus berupa angka.'
+                ]
+            ];
+
+            $this->validation->setRules($rules, $messages);
 
             if (!$this->validate($rules)) {
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());

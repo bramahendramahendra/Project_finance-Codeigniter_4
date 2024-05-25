@@ -114,11 +114,6 @@ class NamaTagihanModel extends Model
         $code = $this->generateCode();
         $data['code'] = $code;
 
-        // echo"<pre>";
-        // var_dump($code);
-        // var_dump($data);
-        // echo"</pre>";
-        // die;
         if (!$this->insert($data)) {
             $this->db->transRollback();
             return false;

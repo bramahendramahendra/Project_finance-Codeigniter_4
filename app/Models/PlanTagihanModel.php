@@ -57,7 +57,7 @@ class PlanTagihanModel extends Model
 
         $dataNamaTagihan = $namaTagihanModel
             ->select('
-                nama_tagihan.code, nama_tagihan.nama_tagihan, nama_tagihan.deskripsi, nama_tagihan.jumlah_tagihan, 
+                nama_tagihan.id as id_nama_tagihan, nama_tagihan.code, nama_tagihan.nama_tagihan, nama_tagihan.deskripsi, nama_tagihan.jumlah_tagihan, 
                 kategori_tagihan.kategori as kategori,
                 status.status as nama_status,
             ')
@@ -67,8 +67,8 @@ class PlanTagihanModel extends Model
 
             foreach ($dataNamaTagihan as &$tagihan) {
                 $dataPlanTagihan = $this
-                    ->select('plan_tagihan.plan, plan_tagihan.jangka_waktu, plan_tagihan.cicilan, plan_tagihan.cicilan_dengan_bunga, plan_tagihan.pembulatan_cicilan, plan_tagihan.total_tagihan, plan_tagihan.total_kelebihan_tagihan')
-                    ->where('id_nama_tagihan', $tagihan['id'])
+                    ->select('plan_tagihan.id as id_plan, plan_tagihan.plan, plan_tagihan.jangka_waktu, plan_tagihan.cicilan, plan_tagihan.cicilan_dengan_bunga, plan_tagihan.pembulatan_cicilan, plan_tagihan.total_tagihan, plan_tagihan.total_kelebihan_tagihan')
+                    ->where('id_nama_tagihan', $tagihan['id_nama_tagihan'])
                     ->findAll();
               
 
@@ -78,26 +78,35 @@ class PlanTagihanModel extends Model
     
                     $dataDebitTagihan = $debitTagihanModel
                         ->select('debit_tagihan.debit, debit_tagihan.debit_tanpa_bunga, debit_tagihan.debit_month')
-                        ->where('id_plan_tagihan', $dataPlanTagihan[0]['id'])
+                        ->where('id_plan_tagihan', $dataPlanTagihan[0]['id_plan'])
                         ->findAll();
                     $tagihan['debit'] = $dataDebitTagihan;
     
                     $dataSummaryTagihan = $summaryTagihanModel
                         ->select('summary_tagihan.jumlah_debit, summary_tagihan.jumlah_debit_tanpa_bunga, summary_tagihan.jumlah_kredit, summary_tagihan.sisa_tagihan')
-                        ->where('id_plan_tagihan', $dataPlanTagihan[0]['id'])
+                        ->where('id_plan_tagihan', $dataPlanTagihan[0]['id_plan'])
                         ->first();
                     if ($dataSummaryTagihan) {
                         $tagihan = array_merge($tagihan, $dataSummaryTagihan);
                     }
                 } else {
                     $tagihan['status_plan'] = 0;
-                    // $tagihan['debit'] = [];
+                    $tagihan['debit'] = [];
                 }
             }
 
         return $dataNamaTagihan;
+    }
 
-        // return $this->findAll();
+    public function createData($data) 
+    {
+        $this->db->transStart();
+        if (!$this->insert($data)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
     }
 
 }
