@@ -6,9 +6,12 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\StatusModel;
 use App\Models\JenisStatusModel;
+use App\Traits\ErrorHandlerTrait;
 
 class StatusController extends BaseController
 {
+    use ErrorHandlerTrait;
+
     public function __construct() 
     {
         $this->StatusModel = new StatusModel();
@@ -17,12 +20,17 @@ class StatusController extends BaseController
 
     public function index()
     {
+        $optionsJenisStatus = $this->JenisStatusModel->getAllJenisStatus();
+        if (empty($optionsJenisStatus)) {
+            return $this->showErrorPage(500, 'Terjadi Kesalahan pada Status !', 'Harap isi jenis status terlebih dahulu sebelum melanjutkan.');
+        }
+
         $data = [
             'judul' => 'Status',
             'menu' => 'status',
             'page' => 'status/v_status',
             'data' => $this->StatusModel->getAllStatus(),
-            'optionsJenisStatus' => $this->JenisStatusModel->getAllJenisStatus(),
+            'optionsJenisStatus' => $optionsJenisStatus,
         ];
         // echo "<pre>";
         // var_dump($data['data']);

@@ -6,9 +6,12 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\KategoriTagihanModel;
 use App\Models\StatusModel;
+use App\Traits\ErrorHandlerTrait;
 
 class KategoriTagihanController extends BaseController
 {
+    use ErrorHandlerTrait;
+
     public function __construct() 
     {
         $this->KategoriTagihanModel = new KategoriTagihanModel();
@@ -17,12 +20,17 @@ class KategoriTagihanController extends BaseController
 
     public function index()
     {
+        $optionsStatus = $this->StatusModel->getStatusByIdJenisStatus($this->statusKategoriTagihan);
+        if (empty($optionsStatus)) {
+            return $this->showErrorPage(500, 'Terjadi Kesalahan pada Kategori Tagihan !', 'Harap isi status terlebih dahulu sebelum melanjutkan.');
+        }
+
         $data = [
             'judul' => 'Kategori Tagihan',
             'menu' => 'kategoriTagihan',
             'page' => 'kategoriTagihan/v_kategoriTagihan',
             'data' => $this->KategoriTagihanModel->getAllKategori(),
-            'optionsStatus' => $this->StatusModel->getStatusByIdJenisStatus($this->statusKategoriTagihan),
+            'optionsStatus' => $optionsStatus,
         ];
 
         return view('v_template', $data);

@@ -233,8 +233,8 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="index3.html" class="brand-link">
-        <img src="<?=base_url('resources')?>/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
+            <img src="<?=base_url('resources')?>/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">Finance</span>
         </a>
 
         <!-- Sidebar -->
@@ -242,22 +242,22 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-            <img src="<?=base_url('resources')?>/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-            </div>
-            <div class="info">
-            <a href="#" class="d-block">Alexander Pierce</a>
+                <img src="<?=base_url('resources')?>/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                <a href="#" class="d-block">Brama Hendra Mahendra</a>
             </div>
         </div>
 
         <!-- SidebarSearch Form -->
         <div class="form-inline">
             <div class="input-group" data-widget="sidebar-search">
-            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-            <div class="input-group-append">
-                <button class="btn btn-sidebar">
-                <i class="fas fa-search fa-fw"></i>
-                </button>
-            </div>
+                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -266,61 +266,51 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
                 <a href="<?= base_url('dashboard') ?>" class="nav-link <?= $menu == 'dashboard' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                    Dashboard
-                </p>
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>Dashboard</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="<?= base_url('kategori_tagihan') ?>" class="nav-link <?= $menu == 'kategoriTagihan' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-tags"></i>
-                <p>
-                    Kategori Tagihan
-                </p>
+                    <i class="nav-icon fas fa-tags"></i>
+                    <p>Kategori Tagihan</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="<?= base_url('nama_tagihan') ?>" class="nav-link <?= $menu == 'namaTagihan' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-file-invoice"></i>
-                <p>
-                    Nama Tagihan
-                </p>
+                    <i class="nav-icon fas fa-file-invoice"></i>
+                    <p>Nama Tagihan</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="<?= base_url('plan_tagihan') ?>" class="nav-link <?= $menu == 'planTagihan' ? 'active' : '' ?>">
-                <i class="nav-icon far fa-image"></i>
-                <p>
-                    Plan Tagihan
-                </p>
+                    <i class="nav-icon fas fa-file"></i>
+                    <p>Plan Tagihan</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="<?= base_url('jenis_status') ?>" class="nav-link <?= $menu == 'jenisStatus' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                    Jenis Status
-                    <!-- <span class="right badge badge-danger">New</span> -->
-                </p>
+                    <i class="nav-icon fas fa-list-alt"></i>
+                    <p>Jenis Status</p>
                 </a>
             </li>
            
             <li class="nav-item">
                 <a href="<?= base_url('status') ?>" class="nav-link <?= $menu == 'status' ? 'active' : '' ?>">
-                <i class="nav-icon far fa-calendar-alt"></i>
-                <p>
-                    Status
-                    <!-- <span class="badge badge-info right">2</span> -->
-                </p>
+                    <i class="nav-icon far fa-calendar-check"></i>
+                    <p>Status</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="<?= base_url('bunga_tagihan') ?>" class="nav-link <?= $menu == 'bungaTagihan' ? 'active' : '' ?>">
+                    <i class="nav-icon fas fa-barcode"></i>
+                    <p>Code Tagihan</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="<?= base_url('code_tagihan') ?>" class="nav-link <?= $menu == 'codeTagihan' ? 'active' : '' ?>">
-                <i class="nav-icon fas fa-columns"></i>
-                <p>
-                    Code Tagihan
-                </p>
+                    <i class="nav-icon fas fa-percentage"></i>
+                    <p>Bunga Tagihan</p>
                 </a>
             </li>
 
@@ -828,12 +818,6 @@
                 </ul>
             </li>
             <li class="nav-header">MISCELLANEOUS</li>
-            <li class="nav-item">
-                <a href="iframe.html" class="nav-link">
-                <i class="nav-icon fas fa-ellipsis-h"></i>
-                <p>Tabbed IFrame Plugin</p>
-                </a>
-            </li>
             <li class="nav-item">
                 <a href="https://adminlte.io/docs/3.1/" class="nav-link">
                 <i class="nav-icon fas fa-file"></i>

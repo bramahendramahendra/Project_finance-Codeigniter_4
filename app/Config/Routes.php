@@ -49,3 +49,9 @@ $routes->get('/code_tagihan', 'CodeTagihanController::index');
 $routes->post('/code_tagihan/store', 'CodeTagihanController::store');
 $routes->post('/code_tagihan/update/(:segment)', 'CodeTagihanController::update/$1');
 $routes->get('/code_tagihan/reset/(:segment)', 'CodeTagihanController::reset/$1');
+
+// Bunga Tagihan 
+$routes->get('/bunga_tagihan', 'BungaTagihanController::index');
+$routes->post('/bunga_tagihan/store', 'BungaTagihanController::store');
+$routes->post('/bunga_tagihan/update/(:segment)', 'BungaTagihanController::update/$1');
+$routes->get('/bunga_tagihan/reset/(:segment)', 'BungaTagihanController::reset/$1');

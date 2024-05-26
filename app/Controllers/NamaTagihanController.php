@@ -7,9 +7,12 @@ use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\NamaTagihanModel;
 use App\Models\KategoriTagihanModel;
 use App\Models\StatusModel;
+use App\Traits\ErrorHandlerTrait;
 
 class NamaTagihanController extends BaseController
 {
+    use ErrorHandlerTrait;
+
     public function __construct() 
     {
         $this->NamaTagihanModel = new NamaTagihanModel();
@@ -19,13 +22,23 @@ class NamaTagihanController extends BaseController
 
     public function index()
     {
+        $optionsStatus = $this->StatusModel->getStatusByIdJenisStatus($this->statusNamaTagihan);
+        if (empty($optionsStatus)) {
+            return $this->showErrorPage(500, 'Terjadi Kesalahan pada Nama Tagihan !', 'Harap isi status terlebih dahulu sebelum melanjutkan.');
+        }
+
+        $optionsKategori = $this->KategoriTagihanModel->getAllKategori();
+        if (empty($optionsKategori)) {
+            return $this->showErrorPage(500, 'Terjadi Kesalahan pada Nama Tagihan !', 'Harap isi kategori terlebih dahulu sebelum melanjutkan.');
+        }
+
         $data = [
             'judul' => 'Nama Tagihan',
             'menu' => 'namaTagihan',
             'page' => 'namaTagihan/v_namaTagihan',
             'data' => $this->NamaTagihanModel->getAllData(),
-            'optionsKategori' => $this->KategoriTagihanModel->getAllKategori(),
-            'optionsStatus' => $this->StatusModel->getStatusByIdJenisStatus($this->statusNamaTagihan),
+            'optionsStatus' => $optionsStatus,
+            'optionsKategori' => $optionsKategori,
         ];
         // echo "<pre>";
         // var_dump($data['data']);

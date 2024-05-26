@@ -47,4 +47,37 @@ class BungaTagihanModel extends Model
     public function getAllData() {
         return $this->first();
     }
+
+    public function createData($data) 
+    {
+        $this->db->transStart();
+        if (!$this->insert($data)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
+    }
+
+    public function updateData($id, $data) 
+    {
+        $this->db->transStart();
+        if (!$this->update($id, $data)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
+    }
+
+    public function deleteData($id) 
+    {
+        $this->db->transStart();
+        if (!$this->delete($id)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
+    }
 }

@@ -9,9 +9,12 @@ use App\Models\NamaTagihanModel;
 use App\Models\KategoriTagihanModel;
 use App\Models\StatusModel;
 use App\Models\BungaTagihanModel;
+use App\Traits\ErrorHandlerTrait;
 
 class PlanTagihanController extends BaseController
 {
+    use ErrorHandlerTrait;
+
     public function __construct() 
     {
         $this->PlanTagihanModel = new PlanTagihanModel();
