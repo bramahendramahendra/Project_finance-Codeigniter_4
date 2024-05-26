@@ -42,7 +42,7 @@ class CodeTagihanController extends BaseController
                     'integer' => 'Code Akhir harus berupa angka.'
                 ],
             ];
-            
+
             $this->validation->setRules($rules, $messages);
 
             if (!$this->validate($rules)) {
@@ -51,7 +51,7 @@ class CodeTagihanController extends BaseController
 
             $dataInsert = [
                 'code_awal' => $this->request->getPost('code_awal'),
-                'code_akhir' => $this->request->getPost('code_akhir')
+                'code_akhir'=> $this->request->getPost('code_akhir')
             ];
         
             if ($this->CodeTagihanModel->createCodeTagihan($dataInsert)) {
@@ -71,8 +71,21 @@ class CodeTagihanController extends BaseController
         if ($this->request->getMethod() === 'POST' && ($id !== '' && !empty($id))) {
             $rules = [
                 'code_awal' => 'required|string',
-                'code_akhir' => 'required'
+                'code_akhir' => 'required|integer'
             ];
+
+            $messages = [
+                'code_awal' => [
+                    'required' => 'Code Awal harus diisi.',
+                    'string' => 'Code Awal harus berupa string.'
+                ],
+                'code_akhir' => [
+                    'required' => 'Code Akhir harus diisi.',
+                    'integer' => 'Code Akhir harus berupa angka.'
+                ],
+            ];
+
+            $this->validation->setRules($rules, $messages);
 
             if (!$this->validate($rules)) {
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
@@ -80,7 +93,7 @@ class CodeTagihanController extends BaseController
 
             $dataUpdate = [
                 'code_awal' => $this->request->getPost('code_awal'),
-                'code_akhir' => $this->request->getPost('code_akhir')
+                'code_akhir'=> $this->request->getPost('code_akhir')
             ];
 
             if ($this->CodeTagihanModel->updateCodeTagihan($id, $dataUpdate)) {

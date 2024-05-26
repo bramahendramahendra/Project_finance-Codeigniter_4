@@ -41,17 +41,17 @@ class NamaTagihanController extends BaseController
             // $validation =  \Config\Services::validation();
 
             $rules = [
-                'kategori' => 'required|integer',
-                'nama_tagihan' => 'required',
-                'deskripsi' => 'permit_empty|string',
-                'jumlah_tagihan' => 'required|validate_rupiah',
-                'status' => 'required|integer',
+                'kategori'      => 'required|integer',
+                'nama_tagihan'  => 'required',
+                'deskripsi'     => 'permit_empty|string',
+                'jumlah_tagihan'=> 'required|validate_rupiah',
+                'status'        => 'required|integer',
             ];
 
             $messages = [
                 'kategori' => [
-                    'required' => 'Kategori harus diisi.',
-                    'integer' => 'Kategori harus berupa angka.'
+                    'required'  => 'Kategori harus diisi.',
+                    'integer'   => 'Kategori harus berupa angka.'
                 ],
                 'nama_tagihan' => [
                     'required' => 'Nama Tagihan harus diisi.',
@@ -60,12 +60,12 @@ class NamaTagihanController extends BaseController
                     'string' => 'Deskripsi harus berupa string.'
                 ],
                 'jumlah_tagihan' => [
-                    'required' => 'Jumlah Tagihan harus diisi.',
-                    'validate_rupiah' => 'Format Rupiah Jumlah Tagihan dengan Bunga tidak valid.'
+                    'required'          => 'Jumlah Tagihan harus diisi.',
+                    'validate_rupiah'   => 'Format Rupiah Jumlah Tagihan dengan Bunga tidak valid.'
                 ],
                 'status' => [
-                    'required' => 'Status harus diisi.',
-                    'integer' => 'Status harus berupa angka.'
+                    'required'  => 'Status harus diisi.',
+                    'integer'   => 'Status harus berupa angka.'
                 ]
             ];
 
@@ -105,17 +105,17 @@ class NamaTagihanController extends BaseController
     {
         if ($this->request->getMethod() === 'POST' && ($id !== '' && !empty($id))) {
             $rules = [
-                'kategori' => 'required|integer',
-                'nama_tagihan' => 'required',
-                'deskripsi' => 'permit_empty|string',
-                'jumlah_tagihan' => 'required|integer',
-                'status' => 'required|integer',
+                'kategori'          => 'required|integer',
+                'nama_tagihan'      => 'required',
+                'deskripsi'         => 'permit_empty|string',
+                'jumlah_tagihan'    => 'required|integer',
+                'status'            => 'required|integer',
             ];
 
             $messages = [
                 'kategori' => [
-                    'required' => 'Kategori harus diisi.',
-                    'integer' => 'Kategori harus berupa angka.'
+                    'required'  => 'Kategori harus diisi.',
+                    'integer'   => 'Kategori harus berupa angka.'
                 ],
                 'nama_tagihan' => [
                     'required' => 'Nama Tagihan harus diisi.',
@@ -124,12 +124,12 @@ class NamaTagihanController extends BaseController
                     'string' => 'Deskripsi harus berupa angka.'
                 ],
                 'jumlah_tagihan' => [
-                    'required' => 'Jumlah Tagihan harus diisi.',
-                    'validate_rupiah' => 'Format Rupiah Jumlah Tagihan dengan Bunga tidak valid.'
+                    'required'          => 'Jumlah Tagihan harus diisi.',
+                    'validate_rupiah'   => 'Format Rupiah Jumlah Tagihan dengan Bunga tidak valid.'
                 ],
                 'status' => [
-                    'required' => 'Status harus diisi.',
-                    'integer' => 'Status harus berupa angka.'
+                    'required'  => 'Status harus diisi.',
+                    'integer'   => 'Status harus berupa angka.'
                 ]
             ];
 
@@ -139,7 +139,7 @@ class NamaTagihanController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
             }
 
-            $data = [
+            $dataUpdate = [
                 'id_kategori'       => $this->request->getPost('kategori'),
                 'nama_tagihan'      => $this->request->getPost('nama_tagihan'),
                 'deskripsi'         => $this->request->getPost('deskripsi'),

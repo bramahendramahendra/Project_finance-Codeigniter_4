@@ -114,6 +114,8 @@ class StatusController extends BaseController
                 'deskripsi' => 'permit_empty|string'
             ];
 
+            $this->validation->setRules($rules, $messages);
+
              if (!$this->validate($rules)) {
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
             }
