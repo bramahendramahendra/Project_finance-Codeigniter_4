@@ -1,7 +1,10 @@
 <?php 
-echo "<pre>";
-var_dump($data);
-echo "</pre>";
+// echo "<pre>";
+// var_dump($data);
+// var_dump($dataBungaTagihan);
+// var_dump($optionsStatus);
+// // die;
+// echo "</pre>";
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -43,7 +46,7 @@ echo "</pre>";
                     <dt class="col-sm-2">Deskripsi</dt>
                     <dd class="col-sm-10"><?=$data['deskripsi']?></dd>
                     
-                    <dt class="col-sm-2">Status</dt>
+                    <dt class="col-sm-2">Status Plan</dt>
                     <dd class="col-sm-10"><?=$data['nama_status']?></dd>
                     
                     <dt class="col-sm-2">Jumlah Tagihan</dt>
@@ -102,8 +105,11 @@ echo "</pre>";
                         <dt class="col-sm-2">Total Tagihan</dt>
                         <dd class="col-sm-10"><?=format_rupiah($dataPlan['total_tagihan'])?></dd>
                         
-                        <dt class="col-sm-2">Total Kelebihan Tagiham</dt>
+                        <dt class="col-sm-2">Total Kelebihan Tagihan</dt>
                         <dd class="col-sm-10"><?=format_rupiah($dataPlan['total_kelebihan_tagihan'])?></dd>
+
+                        <dt class="col-sm-2">Status PLan</dt>
+                        <dd class="col-sm-10"><?=$dataPlan['nama_status_plan']?></dd>
                     </div>
                     <?php
                     // echo "<pre>";
@@ -206,15 +212,24 @@ echo "</pre>";
                         </i>
                         Kembali
                     </button>
-                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#add-data<?= $data['id_nama_tagihan'] ?>">
-                        <i class="fas fa-exchange-alt">
-                        </i>
-                        Ganti Plan
-                    </button>
-                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit-data<?= $data['id_nama_tagihan'] ?>">
+                    <?php if($data['data_plan'][$count_data_plan]['status_plan'] == 8): ?>
+                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#add-data<?= $data['id_nama_tagihan'] ?>">
+                            <i class="fas fa-exchange-alt">
+                            </i>
+                            Ganti Plan
+                        </button>
+                    <?php endif; ?>
+                    <?php if($data['data_plan'][$count_data_plan]['status_plan'] == 6): ?>
+                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit-data<?= $data['id_nama_tagihan'] ?>">
+                            <i class="fas fa-pencil-alt">
+                            </i>
+                            Edit Plan
+                        </button>
+                    <?php endif; ?>
+                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#status-data<?= $data['id_nama_tagihan'] ?>">
                         <i class="fas fa-pencil-alt">
                         </i>
-                        Edit Plan
+                        Status Plan
                     </button>
                 </div>
             </div>
@@ -411,6 +426,40 @@ echo "</pre>";
                         <label for="total_kelebihan_tagihan">Total Kelebihan Tagihan</label>
                         <input type="text" name="total_kelebihan_tagihan" class="form-control total_kelebihan_tagihan" id="edit_total_kelebihan_tagihan<?= $data['id_nama_tagihan'] ?>" value="<?= $totalKelebihanTagihan_value   ?>" placeholder="Total Kelebihan Tagihan" readonly>
                     </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary btn-flat">Save</button>
+            </div>
+            <?php echo form_close() ?>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal Status Data -->  
+<?php $count_data_plan = count($data['data_plan']) - 1; ?>
+<div class="modal fade" id="status-data<?= $data['id_nama_tagihan'] ?>">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Status Data <?= $judul ?></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php echo form_open('plan_tagihan/change_status/'.$data['data_plan'][$count_data_plan]['id_plan']) ?>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select name="status" class="form-control select2" style="width: 100%;" required>
+                        <?php foreach ($optionsStatus as $status): ?>
+                            <option value="<?= esc($status['id']); ?>" <?= $status['id'] == $data['data_plan'][$count_data_plan]['status_plan'] ? 'selected' : '' ?>><?= esc($status['status']); ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">

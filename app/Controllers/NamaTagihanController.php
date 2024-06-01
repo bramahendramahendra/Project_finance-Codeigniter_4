@@ -24,12 +24,12 @@ class NamaTagihanController extends BaseController
     {
         $optionsStatus = $this->StatusModel->getStatusByIdJenisStatus($this->statusNamaTagihan);
         if (empty($optionsStatus)) {
-            return $this->showErrorPage(500, 'Terjadi Kesalahan pada Nama Tagihan !', 'Harap isi status terlebih dahulu sebelum melanjutkan.');
+            return $this->showErrorPage(500, 'namaTagihan', 'Terjadi Kesalahan pada Nama Tagihan !', 'Harap isi status terlebih dahulu sebelum melanjutkan.');
         }
 
         $optionsKategori = $this->KategoriTagihanModel->getAllKategori();
         if (empty($optionsKategori)) {
-            return $this->showErrorPage(500, 'Terjadi Kesalahan pada Nama Tagihan !', 'Harap isi kategori terlebih dahulu sebelum melanjutkan.');
+            return $this->showErrorPage(500, 'namaTagihan', 'Terjadi Kesalahan pada Nama Tagihan !', 'Harap isi kategori terlebih dahulu sebelum melanjutkan.');
         }
 
         $data = [
@@ -40,10 +40,12 @@ class NamaTagihanController extends BaseController
             'optionsStatus' => $optionsStatus,
             'optionsKategori' => $optionsKategori,
         ];
+
         // echo "<pre>";
         // var_dump($data['data']);
         // echo "</pre>";
         // die;
+
         return view('v_template', $data);
     }
 
@@ -93,7 +95,7 @@ class NamaTagihanController extends BaseController
                 'id_kategori'       => $this->request->getPost('kategori'),
                 'nama_tagihan'      => $this->request->getPost('nama_tagihan'),
                 'deskripsi'         => $this->request->getPost('deskripsi'),
-                'jumlah_tagihan'    => $this->parse_rupiah($this->request->getPost('jumlah_tagihan')),
+                'jumlah_tagihan'    => parse_rupiah($this->request->getPost('jumlah_tagihan')),
                 'status'            => $this->request->getPost('status')
             ];
             // echo"<pre>";
@@ -116,12 +118,13 @@ class NamaTagihanController extends BaseController
 
     public function update($id)
     {
+        
         if ($this->request->getMethod() === 'POST' && ($id !== '' && !empty($id))) {
             $rules = [
                 'kategori'          => 'required|integer',
                 'nama_tagihan'      => 'required',
                 'deskripsi'         => 'permit_empty|string',
-                'jumlah_tagihan'    => 'required|integer',
+                'jumlah_tagihan'    => 'required|validate_rupiah',
                 'status'            => 'required|integer',
             ];
 
@@ -134,7 +137,7 @@ class NamaTagihanController extends BaseController
                     'required' => 'Nama Tagihan harus diisi.',
                 ],
                 'deskripsi' => [
-                    'string' => 'Deskripsi harus berupa angka.'
+                    'string' => 'Deskripsi harus berupa string.'
                 ],
                 'jumlah_tagihan' => [
                     'required'          => 'Jumlah Tagihan harus diisi.',
@@ -146,17 +149,23 @@ class NamaTagihanController extends BaseController
                 ]
             ];
 
+         
             $this->validation->setRules($rules, $messages);
 
             if (!$this->validate($rules)) {
+                // var_dump($rules);
+                // var_dump($messages);
+                // echo 'failed';die;
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
             }
 
+            // echo $id;
+            // die;
             $dataUpdate = [
                 'id_kategori'       => $this->request->getPost('kategori'),
                 'nama_tagihan'      => $this->request->getPost('nama_tagihan'),
                 'deskripsi'         => $this->request->getPost('deskripsi'),
-                'jumlah_tagihan'    => $this->request->getPost('jumlah_tagihan'),
+                'jumlah_tagihan'    => parse_rupiah($this->request->getPost('jumlah_tagihan')),
                 'status'            => $this->request->getPost('status')
             ];
             

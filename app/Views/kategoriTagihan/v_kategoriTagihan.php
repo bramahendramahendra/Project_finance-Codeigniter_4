@@ -167,7 +167,7 @@
                 </div>
                 <div class="form-group">
                     <label for="status">Status</label>
-                    <select name="status" class="form-control select2" id="create_status" style="width: 100%;" required>
+                    <select name="status" class="form-control select2" style="width: 100%;" required>
                         <?php foreach ($optionsStatus as $status): ?>
                             <option value="<?= esc($status['id']); ?>"><?= esc($status['status']); ?></option>
                         <?php endforeach; ?>
@@ -210,7 +210,7 @@
                     </div>
                     <div class="form-group">
                         <label for="status">Status</label>
-                        <select name="status" class="form-control select2" id="create_status" style="width: 100%;" required>
+                        <select name="status" class="form-control select2" style="width: 100%;" required>
                             <?php foreach ($optionsStatus as $status): ?>
                                 <option value="<?= esc($status['id']); ?>" <?= $status['id'] == $value['status'] ? 'selected' : '' ?>><?= esc($status['status']); ?></option>
                             <?php endforeach; ?>

@@ -4,10 +4,12 @@
             <div class="card-header">
                 <h5 class="card-title">Data <?=$judul?></h5>
                 <div class="card-tools">
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add-data">
-                        <i class="fas fa-plus-circle"></i>
-                        Tambah <?=$judul?>
-                    </button>
+                    <?php if(count($data) < 1): ?>
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add-data">
+                            <i class="fas fa-plus-circle"></i>
+                            Tambah <?=$judul?>
+                        </button>
+                    <?php endif; ?>
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                         <i class="fas fa-minus"></i>
                     </button>
@@ -54,27 +56,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><?= $data['bunga'] ?></td>
-                            <td> 
-                                <!-- <button class="btn btn-primary btn-sm" >
-                                    <i class="fas fa-folder" >
-                                    </i>
-                                    View
-                                </button> -->
-                                <button class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#edit-data<?= $value['id'] ?>">
-                                    <i class="fas fa-pencil-alt">
-                                    </i>
-                                    Edit
-                                </button>
-                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-data<?= $value['id'] ?>">
-                                    <i class="fas fa-trash">
-                                    </i>
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
+                        <?php 
+                        $no = 1; 
+                        foreach ($data as $key => $value) { ?>
+                            <tr>
+                                <td>1</td>
+                                <td><?= $value['bunga'] ?></td>
+                                <td> 
+                                    <!-- <button class="btn btn-primary btn-sm" >
+                                        <i class="fas fa-folder" >
+                                        </i>
+                                        View
+                                    </button> -->
+                                    <button class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#edit-data<?= $value['id'] ?>">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete-data<?= $value['id'] ?>">
+                                        <i class="fas fa-trash">
+                                        </i>
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php }?>
                     </tbody>
                     <tfoot>
                         <tr>

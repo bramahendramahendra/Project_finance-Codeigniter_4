@@ -19,7 +19,7 @@ class PlanTagihanController extends BaseController
     {
         $this->PlanTagihanModel = new PlanTagihanModel();
         $this->BungaTagihanModel = new BungaTagihanModel();
-        // $this->StatusModel = new StatusModel();
+        $this->StatusModel = new StatusModel();
     }
 
     public function index()
@@ -29,10 +29,10 @@ class PlanTagihanController extends BaseController
             'menu' => 'planTagihan',
             'page' => 'planTagihan/v_planTagihan',
             'data' => $this->PlanTagihanModel->getAllData(),
-            'dataBungaTagihan' => $this->BungaTagihanModel->getAllData(),
+            'dataBungaTagihan' => $this->BungaTagihanModel->getAllData()[0],
         ];
         // echo "<pre>";
-        // var_dump($data['data'][3]);
+        // var_dump($data['data'][0]);
         // echo "</pre>";
         // die;
 
@@ -45,8 +45,18 @@ class PlanTagihanController extends BaseController
 
         $data = $this->PlanTagihanModel->getDataByIdNamaTagihan($id);
 
+        // echo "<pre>";
+        // var_dump($data);
+        // echo "</pre>";
+        // die;
+
         if (!$data) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Data tidak ditemukan');
+        }
+
+        $optionsStatus = $this->StatusModel->getStatusByIdJenisStatus($this->statusPlanTagihan);
+        if (empty($optionsStatus)) {
+            return $this->showErrorPage(500, 'planTagihan','Terjadi Kesalahan pada Plan Tagihan !', 'Harap isi status terlebih dahulu sebelum melanjutkan.');
         }
 
         $data = [
@@ -55,7 +65,13 @@ class PlanTagihanController extends BaseController
             'page' => 'planTagihan/v_detail_planTagihan',
             'data' => $data,
             'dataBungaTagihan' => $this->BungaTagihanModel->getAllData(),
+            'optionsStatus' => $optionsStatus,
         ];
+
+        // echo "<pre>";
+        // var_dump($data['data']['data_plan']);
+        // echo "</pre>";
+        // die;
 
         return view('v_template', $data);
     }
@@ -63,6 +79,11 @@ class PlanTagihanController extends BaseController
     public function store()
     {
         if ($this->request->getMethod() === 'POST') {
+
+            // echo "<pre>"; 
+            // var_dump($this->request->getPost());
+            // echo "</pre>";
+            // die;
 
             $rules = [
                 'id_nama_tagihan' => 'required|integer',
@@ -116,7 +137,7 @@ class PlanTagihanController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
             }
 
-            $dataInsert = [
+            $dataInsertPlan = [
                 'id_nama_tagihan'         => $this->request->getPost('id_nama_tagihan'),
                 'plan'                    => $this->request->getPost('plan'),
                 'jangka_waktu'            => $this->request->getPost('jangka_waktu'),
@@ -124,14 +145,24 @@ class PlanTagihanController extends BaseController
                 'cicilan_dengan_bunga'    => parse_rupiah($this->request->getPost('cicilan_dengan_bunga')),
                 'pembulatan_cicilan'      => parse_rupiah($this->request->getPost('pembulatan_cicilan')),
                 'total_tagihan'           => parse_rupiah($this->request->getPost('total_tagihan')),
-                'total_kelebihan_tagihan' => parse_rupiah($this->request->getPost('total_kelebihan_tagihan'))
+                'total_kelebihan_tagihan' => parse_rupiah($this->request->getPost('total_kelebihan_tagihan')),
+                'status_plan'             => 6
+            ];
+
+            $dataInsertSummary = [
+                'id_nama_tagihan'         => $this->request->getPost('id_nama_tagihan'),
+                'jumlah_debit'            => 0,
+                'jumlah_debit_tanpa_bunga'=> 0,
+                'jumlah_kredit'           => 0,
+                'sisa_tagihan'            => parse_rupiah($this->request->getPost('total_tagihan')),
+                'sisa_tagihan_tanpa_bunga'=> parse_rupiah($this->request->getPost('sisa_jumlah_tagihan_tanpa_bunga')),
             ];
             // echo"<pre>";
             // var_dump($dataInsert);
             // echo"</pre>";
             // die;
 
-            if ($this->PlanTagihanModel->createData($dataInsert)) {
+            if ($this->PlanTagihanModel->createData($dataInsertPlan, $dataInsertSummary)) {
                 session()->setFlashdata('success', 'Data Nama Tagihan Berhasil Ditambahkan.');
             } else {
                 session()->setFlashdata('error', 'Gagal Menambahkan Data Nama Tagihan.');
@@ -217,6 +248,57 @@ class PlanTagihanController extends BaseController
         } else { 
             if($this->request->getMethod() === 'POST') {
                 session()->setFlashdata('error', 'Gagal Menambahkan Input Data Plan Tagihan.');
+            } else {
+                session()->setFlashdata('error', 'Gagal! ID tidak ditemukan.');
+            }
+        }
+        
+        return redirect()->to('plan_tagihan');
+    }
+
+    public function change_status($id)
+    {
+        if ($this->request->getMethod() === 'POST' && ($id !== '' && !empty($id))) {
+            // echo "<pre>";
+            // var_dump($this->request->getPost());
+            // echo "</pre>";
+            // die;
+
+
+            $rules = [
+                'status'    => 'required|integer',
+            ];
+
+            $messages = [
+                'status' => [
+                    'required' => 'Status harus diisi.',
+                    'integer' => 'Status harus berupa angka.'
+                ]
+            ];
+
+            $this->validation->setRules($rules, $messages);
+
+            if (!$this->validate($rules)) {
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            }
+
+            $dataUpdate = [
+                'status_plan'    => $this->request->getPost('status')
+            ];
+            
+            // echo "<pre>";
+            // var_dump($id);
+            // var_dump($dataUpdate);
+            // echo "</pre>";
+            // die;
+            if ($this->PlanTagihanModel->updateData($id, $dataUpdate)) {
+                session()->setFlashdata('success', 'Status Data Plan Tagihan Berhasil Diupdate.');
+            } else {
+                session()->setFlashdata('error', 'Gagal Mengupdate Status Data Plan Tagihan.');
+            }
+        } else { 
+            if($this->request->getMethod() === 'POST') {
+                session()->setFlashdata('error', 'Gagal Menambahkan Input Status Data Plan Tagihan.');
             } else {
                 session()->setFlashdata('error', 'Gagal! ID tidak ditemukan.');
             }

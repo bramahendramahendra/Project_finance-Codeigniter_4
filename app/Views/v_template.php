@@ -302,13 +302,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="<?= base_url('bunga_tagihan') ?>" class="nav-link <?= $menu == 'bungaTagihan' ? 'active' : '' ?>">
+                <a href="<?= base_url('code_tagihan') ?>" class="nav-link <?= $menu == 'codeTagihan' ? 'active' : '' ?>">
                     <i class="nav-icon fas fa-barcode"></i>
                     <p>Code Tagihan</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="<?= base_url('code_tagihan') ?>" class="nav-link <?= $menu == 'codeTagihan' ? 'active' : '' ?>">
+                <a href="<?= base_url('bunga_tagihan') ?>" class="nav-link <?= $menu == 'bungaTagihan' ? 'active' : '' ?>">
                     <i class="nav-icon fas fa-percentage"></i>
                     <p>Bunga Tagihan</p>
                 </a>

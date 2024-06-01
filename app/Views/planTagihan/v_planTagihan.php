@@ -57,6 +57,7 @@
                             <th>Plan</th>
                             <th>Jangka Waktu</th>
                             <th>Cicilan per Bulan</th>
+                            <th>Status</th>
                             <th width="15%">Aksi</th>
                         </tr>
                     </thead>
@@ -77,23 +78,34 @@
                                         <td><?= $plan['plan'] ?></td>
                                         <td><?= $plan['jangka_waktu'] ?> Bulan</td>
                                         <td><?= format_rupiah($plan['pembulatan_cicilan']) ?></td>
+                                        <td><?= $plan['nama_status_plan'] ?></td>
                                         <?php if ($index == 0): ?>
+                                            <?php $count_data_plan = count($value['data_plan']) - 1; ?>
+                                            <?php
+                                            echo "<pre>";
+                                            var_dump($value['data_plan'][$count_data_plan]['status_plan']);
+                                            echo "</pre>";
+                                            ?>
                                             <td rowspan="<?= $rowspan ?>">
                                                 <button class="btn btn-primary btn-sm detail-plan" data-id="<?= $value['id_nama_tagihan'] ?>">
                                                     <i class="fas fa-folder">
                                                     </i>
                                                     Detail Plan
                                                 </button>
-                                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#add-data<?= $value['id_nama_tagihan'] ?>">
-                                                    <i class="fas fa-exchange-alt">
-                                                    </i>
-                                                    Ganti Plan
-                                                </button>
-                                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit-data<?= $value['id_nama_tagihan'] ?>">
-                                                    <i class="fas fa-pencil-alt">
-                                                    </i>
-                                                    Edit Plan
-                                                </button>
+                                                <?php if($value['data_plan'][$count_data_plan]['status_plan'] == 8): ?>
+                                                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#add-data<?= $value['id_nama_tagihan'] ?>">
+                                                        <i class="fas fa-exchange-alt">
+                                                        </i>
+                                                        Ganti Plan
+                                                    </button>
+                                                <?php endif; ?>
+                                                <?php if($value['data_plan'][$count_data_plan]['status_plan'] == 6): ?>
+                                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit-data<?= $value['id_nama_tagihan'] ?>">
+                                                        <i class="fas fa-pencil-alt">
+                                                        </i>
+                                                        Edit Plan
+                                                    </button>
+                                                <?php endif; ?>
                                             </td>
                                         <?php endif; ?>
                                     </tr>
@@ -105,6 +117,7 @@
                                     <td><?= $value['kategori'] ?></td>
                                     <td><?= $value['nama_tagihan'] ?></td>
                                     <td><?= format_rupiah($value['jumlah_tagihan']) ?></td>
+                                    <td>-</td>
                                     <td>-</td>
                                     <td>-</td>
                                     <td>-</td>
@@ -134,6 +147,7 @@
                             <th>Plan</th>
                             <th>Jangka Waktu</th>
                             <th>Cicilan</th>
+                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </tfoot>
@@ -252,7 +266,7 @@
                             <input type="text" name="cicilan" class="form-control cicilan" id="cicilan<?= $value['id_nama_tagihan'] ?>" placeholder="Cicilan" readonly>
                         </div>
                         <div class="form-group  col-4">
-                            <label for="cicilan_dengan_bunga">Cicilan dengan Bunga</label>
+                            <label for="cicilan_dengan_bunga">Cicilan dengan Bunga ( <?= isset($dataBungaTagihan['bunga']) ? $dataBungaTagihan['bunga'] : 0; ?>%)</label>
                             <input type="text" name="cicilan_dengan_bunga" class="form-control cicilan_dengan_bunga" id="cicilan_dengan_bunga<?= $value['id_nama_tagihan'] ?>" placeholder="Cicilan dengan Bunga" readonly>
                         </div>
                         <div class="form-group  col-4">

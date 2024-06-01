@@ -45,6 +45,10 @@ class BungaTagihanModel extends Model
     protected $afterDelete    = [];
 
     public function getAllData() {
+        return $this->findAll();
+    }
+
+    public function getFirstData() {
         return $this->first();
     }
 

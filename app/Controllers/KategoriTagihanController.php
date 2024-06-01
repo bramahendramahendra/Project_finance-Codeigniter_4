@@ -22,7 +22,7 @@ class KategoriTagihanController extends BaseController
     {
         $optionsStatus = $this->StatusModel->getStatusByIdJenisStatus($this->statusKategoriTagihan);
         if (empty($optionsStatus)) {
-            return $this->showErrorPage(500, 'Terjadi Kesalahan pada Kategori Tagihan !', 'Harap isi status terlebih dahulu sebelum melanjutkan.');
+            return $this->showErrorPage(500, 'kategoriTagihan','Terjadi Kesalahan pada Kategori Tagihan !', 'Harap isi status terlebih dahulu sebelum melanjutkan.');
         }
 
         $data = [

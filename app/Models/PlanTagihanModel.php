@@ -17,7 +17,7 @@ class PlanTagihanModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_nama_tagihan', 'plan', 'jangka_waktu', 'cicilan', 'cicilan_dengan_bunga', 'pembulatan_cicilan', 'total_tagihan', 'total_kelebihan_tagihan', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields    = ['id_nama_tagihan', 'plan', 'jangka_waktu', 'cicilan', 'cicilan_dengan_bunga', 'pembulatan_cicilan', 'total_tagihan', 'total_kelebihan_tagihan', 'status_plan', 'created_at', 'updated_at', 'deleted_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -67,8 +67,12 @@ class PlanTagihanModel extends Model
 
             foreach ($dataNamaTagihan as &$tagihan) {
                 $dataPlanTagihan = $this
-                    ->select('plan_tagihan.id as id_plan, plan_tagihan.plan, plan_tagihan.jangka_waktu, plan_tagihan.cicilan, plan_tagihan.cicilan_dengan_bunga, plan_tagihan.pembulatan_cicilan, plan_tagihan.total_tagihan, plan_tagihan.total_kelebihan_tagihan')
+                    ->select('
+                        plan_tagihan.id as id_plan, plan_tagihan.plan, plan_tagihan.jangka_waktu, plan_tagihan.cicilan, plan_tagihan.cicilan_dengan_bunga, plan_tagihan.pembulatan_cicilan, plan_tagihan.total_tagihan, plan_tagihan.total_kelebihan_tagihan, plan_tagihan.status_plan,
+                        status.status as nama_status_plan
+                    ')
                     ->where('id_nama_tagihan', $tagihan['id_nama_tagihan'])
+                    ->join('status', 'status.id = plan_tagihan.status_plan')
                     ->findAll();
               
 
@@ -134,8 +138,12 @@ class PlanTagihanModel extends Model
         // die;
 
         $dataPlanTagihan = $this
-            ->select('plan_tagihan.id as id_plan, plan_tagihan.plan, plan_tagihan.jangka_waktu, plan_tagihan.cicilan, plan_tagihan.cicilan_dengan_bunga, plan_tagihan.pembulatan_cicilan, plan_tagihan.total_tagihan, plan_tagihan.total_kelebihan_tagihan')
+            ->select('
+                plan_tagihan.id as id_plan, plan_tagihan.plan, plan_tagihan.jangka_waktu, plan_tagihan.cicilan, plan_tagihan.cicilan_dengan_bunga, plan_tagihan.pembulatan_cicilan, plan_tagihan.total_tagihan, plan_tagihan.total_kelebihan_tagihan, plan_tagihan.status_plan,
+                status.status as nama_status_plan
+            ')
             ->where('id_nama_tagihan', $id)
+            ->join('status', 'status.id = plan_tagihan.status_plan')
             ->findAll();
             
         // echo "<pre>";
@@ -183,13 +191,22 @@ class PlanTagihanModel extends Model
         return $dataNamaTagihan;
     }
 
-    public function createData($data) 
+    public function createData($dataPlan, $dataSummary) 
     {
         $this->db->transStart();
-        if (!$this->insert($data)) {
+        
+        // Insert dataPlan
+        if (!$this->insert($dataPlan)) {
             $this->db->transRollback();
             return false;
         }
+
+        // Insert dataSummary
+        if (!$this->db->table('summary_tagihan')->insert($dataSummary)) {
+            $this->db->transRollback();
+            return false;
+        }
+
         $this->db->transComplete();
         return true;
     }

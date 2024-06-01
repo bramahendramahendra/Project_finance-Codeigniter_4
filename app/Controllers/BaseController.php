@@ -36,7 +36,7 @@ abstract class BaseController extends Controller
      *
      * @var list<string>
      */
-    protected $helpers = ['form', 'url'];
+    // protected $helpers = ['form', 'url'];
     protected $validation;
 
     /**
@@ -63,7 +63,8 @@ abstract class BaseController extends Controller
         $this->validation = Services::validation();
 
         // Status 
-        $this->statusKategoriTagihan = 5;
-        $this->statusNamaTagihan = 5;
+        $this->statusKategoriTagihan = 1;
+        $this->statusNamaTagihan = 2;
+        $this->statusPlanTagihan = 3;
     }
 }

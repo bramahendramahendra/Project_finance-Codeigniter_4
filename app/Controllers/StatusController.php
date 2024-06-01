@@ -22,7 +22,7 @@ class StatusController extends BaseController
     {
         $optionsJenisStatus = $this->JenisStatusModel->getAllJenisStatus();
         if (empty($optionsJenisStatus)) {
-            return $this->showErrorPage(500, 'Terjadi Kesalahan pada Status !', 'Harap isi jenis status terlebih dahulu sebelum melanjutkan.');
+            return $this->showErrorPage(500, 'status', 'Terjadi Kesalahan pada Status !', 'Harap isi jenis status terlebih dahulu sebelum melanjutkan.');
         }
 
         $data = [
@@ -111,15 +111,17 @@ class StatusController extends BaseController
     {
         if ($this->request->getMethod() === 'POST' && ($id !== '' && !empty($id))) {
             $rules = [
-                'jenis_status' => 'required|integer',
-                'code_status' => [
-                    'rules' => 'required|integer|is_unique[status.code_status,id_jenis_status,{id_jenis_status}]',
-                    'errors' => [
-                        'is_unique' => 'Code status sudah digunakan untuk jenis status ini.'
-                    ]
-                ],
                 'status' => 'required',
                 'deskripsi' => 'permit_empty|string'
+            ];
+
+            $messages = [
+                'status' => [
+                    'required' => 'Status harus diisi.',
+                ],
+                'deskripsi' => [
+                    'string' => 'Deskripsi harus berupa string.'
+                ],
             ];
 
             $this->validation->setRules($rules, $messages);
@@ -129,8 +131,8 @@ class StatusController extends BaseController
             }
 
             $dataUpdate = [
-                'status' => $this->request->getPost('status'),
-                'deskripsi' => $this->request->getPost('deskripsi')
+                'status'            => $this->request->getPost('status'),
+                'deskripsi'         => $this->request->getPost('deskripsi')
             ];
 
             if ($this->StatusModel->updateStatus($id, $dataUpdate)) {
