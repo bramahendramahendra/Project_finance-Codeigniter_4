@@ -51,7 +51,9 @@
                     <thead>
                         <tr>
                             <th width="5%">#</th>
-                            <th>Bunga</th>
+                            <th>Limit Pembayaran Tagihan</th>
+                            <th>Sisa Limit Tagihan</th>
+                            <th>Limit Digunakan</th>
                             <th width="15%">Aksi</th>
                         </tr>
                     </thead>
@@ -61,8 +63,10 @@
                         foreach ($data as $key => $value) { ?>
                             <tr>
                                 <td>1</td>
-                                <td><?= $value['bunga'] ?></td>
-                                <td>
+                                <td><?= format_rupiah($value['limit_bayar_tagihan']) ?></td>
+                                <td><?= format_rupiah($value['sisa_limit_tagihan']) ?></td>
+                                <td><?= format_rupiah($value['limit_digunakan']) ?></td>
+                                <td> 
                                     <button class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#edit-data<?= $value['id'] ?>">
                                         <i class="fas fa-pencil-alt">
                                         </i>
@@ -75,7 +79,9 @@
                     <tfoot>
                         <tr>
                             <th>#</th>
-                            <th>Bunga</th>
+                            <th>Limit Pembayaran Tagihan</th>
+                            <th>Sisa Limit Tagihan</th>
+                            <th>Limit Digunakan</th>
                             <th>Aksi</th>
                         </tr>
                     </tfoot>
@@ -141,11 +147,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <?php echo form_open('bunga_tagihan/store') ?>
+            <?php echo form_open('limit_tagihan/store') ?>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="bunga">Bunga</label>
-                    <input type="text" name="bunga" class="form-control" placeholder="Bunga" required>
+                    <label for="limit_bayar_tagihan">Limit Pembayaran Tagihan</label>
+                    <input type="text" name="limit_bayar_tagihan" class="form-control limit_bayar_tagihan" placeholder="Limit Pembayaran Tagihan" required>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
@@ -172,11 +178,14 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <?php echo form_open('bunga_tagihan/update/'.$value['id']) ?>
+                <?php echo form_open('limit_tagihan/update/'.$value['id']) ?>
                 <div class="modal-body">
+                    <input type="hidden" name="sisa_limit_tagihan" value="<?= $value['sisa_limit_tagihan'] ?>">
+                    <input type="hidden" name="limit_digunakan" value="<?= $value['limit_digunakan'] ?>">
                     <div class="form-group">
-                        <label for="bunga">Bunga</label>
-                        <input type="text" name="bunga" value="<?= $value['bunga'] ?>" class="form-control" placeholder="Bunga" required>
+                        <?php $limitBayarTagihan_value = isset($value['limit_bayar_tagihan']) ? format_rupiah($value['limit_bayar_tagihan']) : ''; ?>
+                        <label for="limit_bayar_tagihan">Limit Pembayaran Tagihan</label>
+                        <input type="text" name="limit_bayar_tagihan" value="<?= $limitBayarTagihan_value ?>" class="form-control limit_bayar_tagihan" placeholder="Limit Pembayaran Tagihan" required>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -193,12 +202,35 @@
 <?php } ?>
 
 <script>
-    $(function () {
-        $("#table-datatables").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#table-datatables_wrapper .col-md-6:eq(0)');
+    $(document).ready(function() {
 
-        $('.select2').select2()
+        $(function () {
+            $("#table-datatables").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#table-datatables_wrapper .col-md-6:eq(0)');
+
+            $('.select2').select2()
+        });
+
+        $('.limit_bayar_tagihan').on('keyup', function(e) {
+            $(this).val(formatRupiah($(this).val(), 'Rp '));
+        });
     });
+    
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
+    }
 </script>

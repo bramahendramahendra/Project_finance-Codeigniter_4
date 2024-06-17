@@ -46,6 +46,7 @@ $routes->post('/plan_tagihan/store', 'PlanTagihanController::store');
 $routes->post('/plan_tagihan/update/(:segment)', 'PlanTagihanController::update/$1');
 $routes->get('/plan_tagihan/delete/(:segment)', 'PlanTagihanController::delete/$1');
 $routes->post('/plan_tagihan/change_status/(:segment)', 'PlanTagihanController::change_status/$1');
+$routes->post('/plan_tagihan/run_plan/(:segment)', 'PlanTagihanController::run_plan/$1');
 
 // Code Tagihan 
 $routes->get('/code_tagihan', 'CodeTagihanController::index');
@@ -57,4 +58,20 @@ $routes->get('/code_tagihan/reset/(:segment)', 'CodeTagihanController::reset/$1'
 $routes->get('/bunga_tagihan', 'BungaTagihanController::index');
 $routes->post('/bunga_tagihan/store', 'BungaTagihanController::store');
 $routes->post('/bunga_tagihan/update/(:segment)', 'BungaTagihanController::update/$1');
-$routes->get('/bunga_tagihan/reset/(:segment)', 'BungaTagihanController::reset/$1');
+// $routes->get('/bunga_tagihan/reset/(:segment)', 'BungaTagihanController::reset/$1');
+
+// Debit Tagihan 
+$routes->get('/debit_tagihan', 'DebitTagihanController::index');
+$routes->post('/debit_tagihan/pay_all', 'DebitTagihanController::pay_all');
+$routes->post('/debit_tagihan/pay_first/(:segment)', 'DebitTagihanController::pay_first/$1');
+$routes->post('/debit_tagihan/pay/(:segment)', 'DebitTagihanController::pay/$1');
+
+// Limit Tagihan 
+$routes->get('/limit_tagihan', 'LimitTagihanController::index');
+$routes->post('/limit_tagihan/store', 'LimitTagihanController::store');
+$routes->post('/limit_tagihan/update/(:segment)', 'LimitTagihanController::update/$1');
+
+// Month 
+$routes->get('/month', 'MonthController::index');
+$routes->post('/month/store', 'MonthController::store');
+$routes->post('/month/update/(:segment)', 'MonthController::update/$1');

@@ -82,9 +82,9 @@
                                         <?php if ($index == 0): ?>
                                             <?php $count_data_plan = count($value['data_plan']) - 1; ?>
                                             <?php
-                                            echo "<pre>";
-                                            var_dump($value['data_plan'][$count_data_plan]['status_plan']);
-                                            echo "</pre>";
+                                            // echo "<pre>";
+                                            // var_dump($value['data_plan'][$count_data_plan]['status_plan']);
+                                            // echo "</pre>";
                                             ?>
                                             <td rowspan="<?= $rowspan ?>">
                                                 <button class="btn btn-primary btn-sm detail-plan" data-id="<?= $value['id_nama_tagihan'] ?>">
@@ -216,6 +216,11 @@
                     </button>
                 </div>
                 <?php echo form_open('plan_tagihan/store') ?>
+                <?php 
+                // echo "<pre>";
+                // var_dump($value);
+                // echo "</pre>";
+                ?>
                 <input type="hidden" name="id_nama_tagihan" value="<?= $value['id_nama_tagihan'] ?>">
                 <div class="modal-body">
                     <div class="row">
@@ -225,7 +230,7 @@
                         </div>
                         <div class="form-group col-4">
                             <label for="kategori">Kategori</label>
-                            <input type="text" name="kategori" class="form-control kategori" id="kategori<?= $value['id_nama_tagihan'] ?> value="<?= $value['kategori'] ?>" placeholder="Kategori" readonly>
+                            <input type="text" name="kategori" class="form-control kategori" id="kategori<?= $value['id_nama_tagihan'] ?>" value="<?= $value['kategori'] ?>" placeholder="Kategori" readonly>
                         </div>
                         <div class="form-group col-5">
                             <label for="nama_tagihan">Nama Tagihan</label>
@@ -310,17 +315,7 @@
                     </button>
                 </div>
                 <?php echo form_open('plan_tagihan/update/'.$value['id_nama_tagihan']) ?>
-                <?php
-                // echo "<pre>";
-                // var_dump($value);    
-                // echo "</pre>";    
-                $lastDataPlan = end($value['data_plan']);
-                echo "<pre>";
-                var_dump($lastDataPlan);    
-                echo "</pre>"; 
-                // die;   
-                
-                ?>
+                <?php $lastDataPlan = end($value['data_plan']);?>
                 <input type="hidden" name="id_nama_tagihan" value="<?= $value['id_nama_tagihan'] ?>">
                 <div class="modal-body">
                     <div class="row">
@@ -330,7 +325,7 @@
                         </div>
                         <div class="form-group col-4">
                             <label for="kategori">Kategori</label>
-                            <input type="text" name="kategori" class="form-control kategori" id="edit_kategori<?= $value['id_nama_tagihan'] ?> value="<?= $value['kategori'] ?>" placeholder="Kategori" readonly>
+                            <input type="text" name="kategori" class="form-control kategori" id="edit_kategori<?= $value['id_nama_tagihan'] ?>" value="<?= $value['kategori'] ?>" placeholder="Kategori" readonly>
                         </div>
                         <div class="form-group col-5">
                             <label for="nama_tagihan">Nama Tagihan</label>
@@ -360,7 +355,7 @@
                             <label for="plan">Plan</label>
                             <input type="text" name="plan" class="form-control plan" id="edit_plan<?= $value['id_nama_tagihan'] ?>" value="<?= $plan_value ?>"  placeholder="Plan" readonly>
                         </div>
-                        <div class="form-group  col-8">
+                        <div class="form-group col-8">
                             <label for="jangka_waktu">Jangka Waktu</label>
                             <input type="text" name="jangka_waktu" class="form-control jangka_waktu" id="edit_jangka_waktu<?= $value['id_nama_tagihan'] ?>" value="<?=isset($lastDataPlan['jangka_waktu'])?$lastDataPlan['jangka_waktu']:''?>" placeholder="Jangka Waktu" required>
                         </div>
@@ -411,7 +406,7 @@
 <script>
     $(document).ready(function() {
         const bungaTagihanValue = <?= isset($dataBungaTagihan['bunga']) ? $dataBungaTagihan['bunga'] : 0; ?>;
-    
+
         $(function () {
             $("#table-datatables").DataTable({
                 "responsive": true, "lengthChange": false, "autoWidth": false,

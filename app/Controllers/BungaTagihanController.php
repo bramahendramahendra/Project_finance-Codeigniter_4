@@ -21,10 +21,7 @@ class BungaTagihanController extends BaseController
             'page' => 'bungaTagihan/v_bungaTagihan',
             'data' => $this->BungaTagihanModel->getAllData(),
         ];
-        // echo "<pre>"; 
-        // var_dump($data);
-        // echo "</pre>";
-        // die; 
+        
         return view('v_template', $data);
     }
 
@@ -99,21 +96,6 @@ class BungaTagihanController extends BaseController
             } else {
                 session()->setFlashdata('error', 'Gagal! ID tidak ditemukan.');
             }
-        }
-
-        return redirect()->to('bunga_tagihan');
-    }
-
-    public function delete($id)
-    {
-        if ($id !== '' && !empty($id)) {
-            if ($this->BungaTagihanModel->deleteData($id)) {
-                session()->setFlashdata('success', 'Data Bunga Tagihan Berhasil Dihapus.');
-            } else {
-                session()->setFlashdata('error', 'Gagal Menghapus Data Bunga Tagihan.');
-            }
-        } else {
-            session()->setFlashdata('error', 'Gagal! ID tidak ditemukan.');
         }
 
         return redirect()->to('bunga_tagihan');

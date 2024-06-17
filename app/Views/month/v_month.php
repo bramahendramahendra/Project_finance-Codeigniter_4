@@ -4,7 +4,7 @@
             <div class="card-header">
                 <h5 class="card-title">Data <?=$judul?></h5>
                 <div class="card-tools">
-                    <?php if(count($data) < 1): ?>
+                    <?php if(count($data) < 12): ?>
                         <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add-data">
                             <i class="fas fa-plus-circle"></i>
                             Tambah <?=$judul?>
@@ -51,7 +51,7 @@
                     <thead>
                         <tr>
                             <th width="5%">#</th>
-                            <th>Bunga</th>
+                            <th>Bulan</th>
                             <th width="15%">Aksi</th>
                         </tr>
                     </thead>
@@ -60,9 +60,9 @@
                         $no = 1; 
                         foreach ($data as $key => $value) { ?>
                             <tr>
-                                <td>1</td>
-                                <td><?= $value['bunga'] ?></td>
-                                <td>
+                                <td><?= $value['id'] ?></td>
+                                <td><?= $value['month'] ?></td>
+                                <td> 
                                     <button class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#edit-data<?= $value['id'] ?>">
                                         <i class="fas fa-pencil-alt">
                                         </i>
@@ -75,7 +75,7 @@
                     <tfoot>
                         <tr>
                             <th>#</th>
-                            <th>Bunga</th>
+                            <th>Bulan</th>
                             <th>Aksi</th>
                         </tr>
                     </tfoot>
@@ -141,11 +141,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <?php echo form_open('bunga_tagihan/store') ?>
+            <?php echo form_open('month/store') ?>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="bunga">Bunga</label>
-                    <input type="text" name="bunga" class="form-control" placeholder="Bunga" required>
+                    <label for="month">Bulan</label>
+                    <input type="text" name="month" class="form-control" placeholder="Bulan" required>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
@@ -172,11 +172,11 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <?php echo form_open('bunga_tagihan/update/'.$value['id']) ?>
+                <?php echo form_open('month/update/'.$value['id']) ?>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="bunga">Bunga</label>
-                        <input type="text" name="bunga" value="<?= $value['bunga'] ?>" class="form-control" placeholder="Bunga" required>
+                        <label for="month">Bulan</label>
+                        <input type="text" name="month" value="<?= $value['month'] ?>" class="form-control" placeholder="Bulan" required>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -193,12 +193,15 @@
 <?php } ?>
 
 <script>
-    $(function () {
-        $("#table-datatables").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#table-datatables_wrapper .col-md-6:eq(0)');
+    $(document).ready(function() {
+        $(function () {
+            $("#table-datatables").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#table-datatables_wrapper .col-md-6:eq(0)');
 
-        $('.select2').select2()
+            $('.select2').select2()
+        });
+
     });
 </script>

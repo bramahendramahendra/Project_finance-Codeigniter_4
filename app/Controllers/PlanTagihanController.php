@@ -9,6 +9,7 @@ use App\Models\NamaTagihanModel;
 use App\Models\KategoriTagihanModel;
 use App\Models\StatusModel;
 use App\Models\BungaTagihanModel;
+use App\Models\LimitTagihanModel;
 use App\Traits\ErrorHandlerTrait;
 
 class PlanTagihanController extends BaseController
@@ -19,6 +20,7 @@ class PlanTagihanController extends BaseController
     {
         $this->PlanTagihanModel = new PlanTagihanModel();
         $this->BungaTagihanModel = new BungaTagihanModel();
+        $this->LimitTagihanModel = new LimitTagihanModel();
         $this->StatusModel = new StatusModel();
     }
 
@@ -30,12 +32,14 @@ class PlanTagihanController extends BaseController
             'page' => 'planTagihan/v_planTagihan',
             'data' => $this->PlanTagihanModel->getAllData(),
             'dataBungaTagihan' => $this->BungaTagihanModel->getAllData()[0],
+            // 'dataLimitTagihan' => $this->LimitTagihanModel->getAllData()[0],
         ];
+
         // echo "<pre>";
-        // var_dump($data['data'][0]);
+        // var_dump($data['dataLimitTagihan']);
         // echo "</pre>";
         // die;
-
+        
         return view('v_template', $data);
     }
 
@@ -65,6 +69,7 @@ class PlanTagihanController extends BaseController
             'page' => 'planTagihan/v_detail_planTagihan',
             'data' => $data,
             'dataBungaTagihan' => $this->BungaTagihanModel->getAllData(),
+            'dataLimitTagihan' => $this->LimitTagihanModel->getAllData()[0],
             'optionsStatus' => $optionsStatus,
         ];
 
@@ -187,6 +192,11 @@ class PlanTagihanController extends BaseController
                 'total_tagihan' => 'required|validate_rupiah',
                 'total_kelebihan_tagihan' => 'required|validate_rupiah',
             ];
+
+            // echo "<pre>";
+            // var_dump($rules);
+            // echo "</pre>";
+            // die;
 
             $messages = [
                 'id_nama_tagihan' => [

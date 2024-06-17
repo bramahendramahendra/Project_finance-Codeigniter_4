@@ -4,15 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class BungaTagihanModel extends Model
+class LimitTagihanModel extends Model
 {
-    protected $table            = 'bunga_tagihan';
+    protected $table            = 'limit_tagihan';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['bunga', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields    = ['limit_bayar_tagihan', 'sisa_limit_tagihan', 'limit_digunakan', 'created_at', 'updated_at', 'deleted_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -73,15 +73,4 @@ class BungaTagihanModel extends Model
         $this->db->transComplete();
         return true;
     }
-
-    // public function deleteData($id) 
-    // {
-    //     $this->db->transStart();
-    //     if (!$this->delete($id)) {
-    //         $this->db->transRollback();
-    //         return false;
-    //     }
-    //     $this->db->transComplete();
-    //     return true;
-    // }
 }

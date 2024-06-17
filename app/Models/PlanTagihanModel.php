@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 use App\Models\KategoriTagihanModel;
 use App\Models\NamaTagihanModel;
 use App\Models\DebitTagihanModel;
-use App\Models\PlanTagihanModel;
+// use App\Models\PlanTagihanModel;
 use App\Models\SummaryTagihanModel;
 
 class PlanTagihanModel extends Model
@@ -118,7 +118,7 @@ class PlanTagihanModel extends Model
 
     public function getDataByIdNamaTagihan($id) {
         $namaTagihanModel = new NamaTagihanModel();
-        $planTagihanModel = new PlanTagihanModel();
+        // $planTagihanModel = new PlanTagihanModel();
         $debitTagihanModel = new DebitTagihanModel();
         $summaryTagihanModel = new SummaryTagihanModel();
 
