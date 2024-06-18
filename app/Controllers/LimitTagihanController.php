@@ -101,7 +101,7 @@ class LimitTagihanController extends BaseController
             // die;
 
             if(!($limit_bayar_taguhan > $limit_digunakan)) {
-                return redirect()->back()->withInput()->with('error', 'Pastikan Limit Bayar Tagihan melebihi Limit yang digunakan.');
+                return redirect()->back()->withInput()->with('error', 'Pastikan Limit Bayar Tagihan tidak melebihi Limit yang digunakan.');
             }
 
             $dataUpdate = [

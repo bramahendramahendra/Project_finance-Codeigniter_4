@@ -6,7 +6,22 @@
 // // die;
 // echo "</pre>";
 ?>
-<?php $count_data_plan = count($data['data_plan']) - 1; ?>
+<?php 
+    if(session()->getFlashdata('success')) {
+        echo '<div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h5><i class="icon fas fa-check"></i>';
+        echo session()->getFlashdata('success');
+        echo '</h5></div>';
+    } elseif(session()->getFlashdata('error'))  {
+        echo '<div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h5><i class="icon fas fa-times"></i>';
+        echo session()->getFlashdata('error');
+        echo '</h5></div>';
+    }
+?>
+<?php $lastDataPlan = end($data['data_plan']);?>
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -213,27 +228,27 @@
                         </i>
                         Kembali
                     </button>
-                    <?php if($data['data_plan'][$count_data_plan]['status_plan'] == 8): ?>
+                    <?php if($lastDataPlan['status_plan'] == 8): ?>
                         <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#add-data<?= $data['id_nama_tagihan'] ?>">
                             <i class="fas fa-exchange-alt">
                             </i>
                             Ganti Plan
                         </button>
                     <?php endif; ?>
-                    <?php if($data['data_plan'][$count_data_plan]['status_plan'] == 6): ?>
+                    <?php if($lastDataPlan['status_plan'] == 6): ?>
                         <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit-data<?= $data['id_nama_tagihan'] ?>">
                             <i class="fas fa-pencil-alt">
                             </i>
                             Edit Plan
                         </button>
-                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#jalankan-data<?= $data['id_nama_tagihan'] ?>">
-                            <i class="fas fa-pencil-alt">
+                        <button class="btn btn-success btn-sm" onclick="checkLimit(<?= $data['id_nama_tagihan'] ?>, <?= isset($dataLimitTagihan['sisa_limit_tagihan']) ? $dataLimitTagihan['sisa_limit_tagihan'] : 0 ?>, <?= isset($dataLimitTagihan['limit_bayar_tagihan']) ? $dataLimitTagihan['limit_bayar_tagihan'] : 0 ?>)" >
+                            <i class="fas fa-play">
                             </i>
                             Jalankan Plan
                         </button>
                     <?php endif; ?>
-                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#status-data<?= $data['id_nama_tagihan'] ?>">
-                        <i class="fas fa-pencil-alt">
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#status-data<?= $data['id_nama_tagihan'] ?>">
+                        <i class="fas fa-info-circle">
                         </i>
                         Status Plan
                     </button>
@@ -349,18 +364,6 @@
                 </button>
             </div>
             <?php echo form_open('plan_tagihan/update/'.$data['id_nama_tagihan']) ?>
-            <?php
-            // echo "<pre>";
-            // var_dump($data);    
-            // echo "</pre>";    
-            $lastDataPlan = end($data['data_plan']);
-            // echo "<pre>";
-            // var_dump($lastDataPlan);    
-            // echo "</pre>"; 
-            // die;   
-            
-            ?>
-            <input type="hidden" name="id_nama_tagihan" value="<?= $data['id_nama_tagihan'] ?>">
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group col-3">
@@ -388,9 +391,9 @@
                         <input type="text" name="jumlah_pembayaran_tagihan" class="form-control jumlah_pembayaran_tagihan" id="edit_jumlah_pembayaran_tagihan<?= $data['id_nama_tagihan'] ?>" value="<?= $jumlahPembayaranTagihan_value ?>" placeholder="Jumlah Pembayaran Tagihan" readonly>
                     </div>
                     <div class="form-group col-4">
-                        <?php $sisaJumlahTagihan_value = isset($data['sisa_tagihan']) && $data['sisa_tagihan'] ? format_rupiah($data['sisa_tagihan']) : format_rupiah($data['jumlah_tagihan']); ?>
+                        <?php $sisaJumlahTagihanTanpaBunga_value = isset($data['sisa_tagihan_tanpa_bunga']) && $data['sisa_tagihan_tanpa_bunga'] ? format_rupiah($data['sisa_tagihan_tanpa_bunga']) : format_rupiah($data['jumlah_tagihan']); ?>
                         <label for="sisa_jumlah_tagihan_tanpa_bunga">Sisa Jumlah Tagihan Tanpa Bunga</label>
-                        <input type="text" name="sisa_jumlah_tagihan_tanpa_bunga" class="form-control sisa_jumlah_tagihan_tanpa_bunga" id="edit_sisa_jumlah_tagihan_tanpa_bunga<?= $data['id_nama_tagihan'] ?>" value="<?= $sisaJumlahTagihan_value ?>" placeholder="Sisa Jumlah Tagihan Tanpa Bunga" readonly>
+                        <input type="text" name="sisa_jumlah_tagihan_tanpa_bunga" class="form-control sisa_jumlah_tagihan_tanpa_bunga" id="edit_sisa_jumlah_tagihan_tanpa_bunga<?= $data['id_nama_tagihan'] ?>" value="<?= $sisaJumlahTagihanTanpaBunga_value ?>" placeholder="Sisa Jumlah Tagihan Tanpa Bunga" readonly>
                     </div>
                 </div>
                 <div class="row">
@@ -456,8 +459,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <?php echo form_open('plan_tagihan/run_plan/'.$data['id_nama_tagihan']) ?>
-            <?php $lastDataPlan = end($data['data_plan']);?>
+            <?php echo form_open('plan_tagihan/run_plan/'.$lastDataPlan['id_plan']) ?>
             <input type="hidden" name="id_nama_tagihan" value="<?= $data['id_nama_tagihan'] ?>">
             <div class="modal-body">
                 <div class="row">
@@ -504,9 +506,9 @@
                         <input type="text" name="jumlah_pembayaran_tagihan" class="form-control jumlah_pembayaran_tagihan" id="run_jumlah_pembayaran_tagihan<?= $data['id_nama_tagihan'] ?>" value="<?= $jumlahPembayaranTagihan_value ?>" placeholder="Jumlah Pembayaran Tagihan" readonly>
                     </div>
                     <div class="form-group col-4">
-                        <?php $sisaJumlahTagihan_value = isset($data['sisa_tagihan']) && $data['sisa_tagihan'] ? format_rupiah($data['sisa_tagihan']) : format_rupiah($data['jumlah_tagihan']); ?>
+                        <?php $sisaJumlahTagihanTanpaBunga_value = isset($data['sisa_tagihan_tanpa_bunga']) && $data['sisa_tagihan_tanpa_bunga'] ? format_rupiah($data['sisa_tagihan_tanpa_bunga']) : format_rupiah($data['jumlah_tagihan']); ?>
                         <label for="sisa_jumlah_tagihan_tanpa_bunga">Sisa Jumlah Tagihan Tanpa Bunga</label>
-                        <input type="text" name="sisa_jumlah_tagihan_tanpa_bunga" class="form-control sisa_jumlah_tagihan_tanpa_bunga" id="run_sisa_jumlah_tagihan_tanpa_bunga<?= $data['id_nama_tagihan'] ?>" value="<?= $sisaJumlahTagihan_value ?>" placeholder="Sisa Jumlah Tagihan Tanpa Bunga" readonly>
+                        <input type="text" name="sisa_jumlah_tagihan_tanpa_bunga" class="form-control sisa_jumlah_tagihan_tanpa_bunga" id="run_sisa_jumlah_tagihan_tanpa_bunga<?= $data['id_nama_tagihan'] ?>" value="<?= $sisaJumlahTagihanTanpaBunga_value ?>" placeholder="Sisa Jumlah Tagihan Tanpa Bunga" readonly>
                     </div>
                 </div>
                 <div class="row">
@@ -516,9 +518,15 @@
                         <input type="text" name="plan" class="form-control plan" id="run_plan<?= $data['id_nama_tagihan'] ?>" value="<?= $plan_value ?>"  placeholder="Plan" readonly>
                     </div>
                     <div class="form-group  col-4">
-                        <?php $limitBayarTagihan_value = isset($lastDataPlan['pembulatan_cicilan']) && isset($dataLimitTagihan['sisa_limit_tagihan']) ? format_rupiah($dataLimitTagihan['sisa_limit_tagihan'] - $lastDataPlan['pembulatan_cicilan']) : format_rupiah($dataLimitTagihan['sisa_limit_tagihan'] - 0); ?>
-                        <label for="limit_bayar_tagihan">Sisa Limit</label>
-                        <input type="text" name="limit_bayar_tagihan" class="form-control limit_bayar_tagihan" id="run_limit_bayar_tagihan<?= $data['id_nama_tagihan'] ?>" value="<?=$limitBayarTagihan_value?>" placeholder="Sisa Limit" readonly>
+                        <!-- <?php echo($dataLimitTagihan['sisa_limit_tagihan']) ?> -->
+                        <!-- <?php echo($lastDataPlan['pembulatan_cicilan']) ?>/ -->
+                        <input type="hidden" name="limit_bayar_tagihan" value="<?= isset($dataLimitTagihan['limit_bayar_tagihan']) ? format_rupiah($dataLimitTagihan['limit_bayar_tagihan']): format_rupiah(0); ?>">
+                        <input type="hidden" name="sisa_limit_tagihan" value="<?= isset($dataLimitTagihan['sisa_limit_tagihan']) ? format_rupiah($dataLimitTagihan['sisa_limit_tagihan']): format_rupiah(0); ?>">
+                        <input type="hidden" name="limit_digunakan" value="<?= isset($dataLimitTagihan['limit_digunakan']) ? format_rupiah($dataLimitTagihan['limit_digunakan']): format_rupiah(0); ?>">
+
+                        <?php $sisaLimit_value = isset($lastDataPlan['pembulatan_cicilan']) && isset($dataLimitTagihan['sisa_limit_tagihan']) ? format_rupiah($dataLimitTagihan['sisa_limit_tagihan'] - $lastDataPlan['pembulatan_cicilan']) : format_rupiah($dataLimitTagihan['sisa_limit_tagihan'] - 0); ?>
+                        <label for="sisa_limit">Sisa Limit</label>
+                        <input type="text" name="sisa_limit" class="form-control sisa_limit" id="sisa_limit<?= $data['id_nama_tagihan'] ?>" value="<?=$sisaLimit_value?>" placeholder="Sisa Limit" readonly>
                     </div>
                     <div class="form-group  col-4">
                         <label for="jangka_waktu">Jangka Waktu</label>
@@ -577,13 +585,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <?php echo form_open('plan_tagihan/change_status/'.$data['data_plan'][$count_data_plan]['id_plan']) ?>
+            <?php echo form_open('plan_tagihan/change_status/'.$lastDataPlan['id_plan']) ?>
             <div class="modal-body">
                 <div class="form-group">
                     <label for="status">Status</label>
                     <select name="status" class="form-control select2" style="width: 100%;" required>
                         <?php foreach ($optionsStatus as $status): ?>
-                            <option value="<?= esc($status['id']); ?>" <?= $status['id'] == $data['data_plan'][$count_data_plan]['status_plan'] ? 'selected' : '' ?>><?= esc($status['status']); ?></option>
+                            <option value="<?= esc($status['id']); ?>" <?= $status['id'] == $lastDataPlan['status_plan'] ? 'selected' : '' ?>><?= esc($status['status']); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -604,7 +612,6 @@
     $(document).ready(function() {
         const bungaTagihanValue = <?= isset($dataBungaTagihan['bunga']) ? $dataBungaTagihan['bunga'] : 0; ?>;
 
-        const initialLimit = <?= isset($dataLimitTagihan['sisa_limit_tagihan']) ? $dataLimitTagihan['sisa_limit_tagihan'] : 0; ?>;
         
         $(function () {
             <?php if($data['status_plan'] === 1): ?>
@@ -773,6 +780,9 @@
                 $(this).val(jangkaWaktu);
             }
 
+            // console.log(sisaJumlahTagihanStr);
+            // console.log(jangkaWaktu);
+
             if (sisaJumlahTagihanStr) {
                 var sisaJumlahTagihan = parseFloat(sisaJumlahTagihanStr.replace(/[^0-9]/g, ''));
                 var jangkaWaktu = parseInt($(this).val());
@@ -844,21 +854,41 @@
     }
 
     function updateLimitBayarTagihan(id) {
-            // console.log(id);
-            var id = id.replace('run_pembulatan_cicilan', '');
-            var pembulatanCicilanStr = $('#run_pembulatan_cicilan' + id).val();
+        // console.log(id);
+        var id = id.replace('run_pembulatan_cicilan', '');
+        var pembulatanCicilanStr = $('#run_pembulatan_cicilan' + id).val();
+        const initialLimit = <?= isset($dataLimitTagihan['sisa_limit_tagihan']) ? $dataLimitTagihan['sisa_limit_tagihan'] : 0; ?>;
 
-            console.log(pembulatanCicilanStr);
-            var pembulatanCicilan = pembulatanCicilanStr ? parseFloat(pembulatanCicilanStr.replace(/[^0-9]/g, '')) : 0;
-            console.log(pembulatanCicilan);
-            console.log(initialLimit);
-            var newLimit = initialLimit - pembulatanCicilan;
+
+        // console.log(pembulatanCicilanStr);
+        var pembulatanCicilan = pembulatanCicilanStr ? parseFloat(pembulatanCicilanStr.replace(/[^0-9]/g, '')) : 0;
+        // console.log(pembulatanCicilan);
+        // console.log(initialLimit);
+        var newLimit = 0;
+        if(initialLimit >= pembulatanCicilan) {
+            newLimit = initialLimit - pembulatanCicilan;
 
             if (isNaN(newLimit)) {
                 newLimit = initialLimit;
             }
 
             console.log(newLimit);
-            $('#run_limit_bayar_tagihan' + id).val(formatRupiah(newLimit.toString(), 'Rp '));
+            $('#run_sisa_limit' + id).val(formatRupiah(newLimit.toString(), 'Rp '));
+        } else {
+            $('#run_sisa_limit' + id).val(formatRupiah(newLimit.toString(), 'Rp '));
+
         }
+    }
+
+    function checkLimit(id, sisaLimitTagihan, limitBayarTagihan) {
+        if (sisaLimitTagihan == 0) {
+            alert("Sisa limit tagihan habis / Rp 0. Cek kembali Tagihan berjalan anda");
+            return false;
+        }
+        if (limitBayarTagihan == 0) {
+            alert("Pastikan anda telah mengisi limit tagihan terlebih dahulu");
+            return false;
+        }
+        $('#jalankan-data' + id).modal('show');
+    }
 </script>

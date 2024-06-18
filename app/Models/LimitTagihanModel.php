@@ -73,4 +73,9 @@ class LimitTagihanModel extends Model
         $this->db->transComplete();
         return true;
     }
+
+    public function updateDataForPlan($data) 
+    {
+        return $this->update(1, $data);
+    }
 }

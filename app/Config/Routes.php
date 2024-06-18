@@ -41,7 +41,7 @@ $routes->get('/status/delete/(:segment)', 'StatusController::delete/$1');
 // Plan Tagihan 
 $routes->get('/plan_tagihan', 'PlanTagihanController::index');
 $routes->post('/plan_tagihan/detail', 'PlanTagihanController::detail');
-// $routes->get('/plan_tagihan/detail/(:segment)', 'PlanTagihanController::detail/$1');
+$routes->get('/plan_tagihan/detail', 'PlanTagihanController::detail');
 $routes->post('/plan_tagihan/store', 'PlanTagihanController::store');
 $routes->post('/plan_tagihan/update/(:segment)', 'PlanTagihanController::update/$1');
 $routes->get('/plan_tagihan/delete/(:segment)', 'PlanTagihanController::delete/$1');

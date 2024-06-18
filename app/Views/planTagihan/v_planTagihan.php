@@ -316,7 +316,6 @@
                 </div>
                 <?php echo form_open('plan_tagihan/update/'.$value['id_nama_tagihan']) ?>
                 <?php $lastDataPlan = end($value['data_plan']);?>
-                <input type="hidden" name="id_nama_tagihan" value="<?= $value['id_nama_tagihan'] ?>">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-3">
@@ -344,9 +343,9 @@
                             <input type="text" name="jumlah_pembayaran_tagihan" class="form-control jumlah_pembayaran_tagihan" id="edit_jumlah_pembayaran_tagihan<?= $value['id_nama_tagihan'] ?>" value="<?= $jumlahPembayaranTagihan_value ?>" placeholder="Jumlah Pembayaran Tagihan" readonly>
                         </div>
                         <div class="form-group col-4">
-                            <?php $sisaJumlahTagihan_value = isset($value['sisa_tagihan']) && $value['sisa_tagihan'] ? format_rupiah($value['sisa_tagihan']) : format_rupiah($value['jumlah_tagihan']); ?>
+                            <?php $sisaJumlahTagihanTanpaBunga_value = isset($value['sisa_tagihan_tanpa_bunga']) && $value['sisa_tagihan_tanpa_bunga'] ? format_rupiah($value['sisa_tagihan_tanpa_bunga']) : format_rupiah($value['jumlah_tagihan']); ?>
                             <label for="sisa_jumlah_tagihan_tanpa_bunga">Sisa Jumlah Tagihan Tanpa Bunga</label>
-                            <input type="text" name="sisa_jumlah_tagihan_tanpa_bunga" class="form-control sisa_jumlah_tagihan_tanpa_bunga" id="edit_sisa_jumlah_tagihan_tanpa_bunga<?= $value['id_nama_tagihan'] ?>" value="<?= $sisaJumlahTagihan_value ?>" placeholder="Sisa Jumlah Tagihan Tanpa Bunga" readonly>
+                            <input type="text" name="sisa_jumlah_tagihan_tanpa_bunga" class="form-control sisa_jumlah_tagihan_tanpa_bunga" id="edit_sisa_jumlah_tagihan_tanpa_bunga<?= $value['id_nama_tagihan'] ?>" value="<?= $sisaJumlahTagihanTanpaBunga_value ?>" placeholder="Sisa Jumlah Tagihan Tanpa Bunga" readonly>
                         </div>
                     </div>
                     <div class="row">

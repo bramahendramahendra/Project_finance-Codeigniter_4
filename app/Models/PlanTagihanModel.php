@@ -8,6 +8,7 @@ use App\Models\NamaTagihanModel;
 use App\Models\DebitTagihanModel;
 // use App\Models\PlanTagihanModel;
 use App\Models\SummaryTagihanModel;
+use App\Models\LimitTagihanModel;
 
 class PlanTagihanModel extends Model
 {
@@ -202,7 +203,9 @@ class PlanTagihanModel extends Model
         }
 
         // Insert dataSummary
-        if (!$this->db->table('summary_tagihan')->insert($dataSummary)) {
+        $summaryTagihanModel = new SummaryTagihanModel();
+        if (!$summaryTagihanModel->createDataForPlan($dataSummary)) {
+        // if (!$this->db->table('summary_tagihan')->insert($dataSummary)) {
             $this->db->transRollback();
             return false;
         }
@@ -215,6 +218,25 @@ class PlanTagihanModel extends Model
     {
         $this->db->transStart();
         if (!$this->update($id, $data)) {
+            $this->db->transRollback();
+            return false;
+        }
+        $this->db->transComplete();
+        return true;
+    }
+
+    public function runData($id, $dataPlan, $dataLimit) 
+    {
+        $this->db->transStart();
+        if (!$this->update($id, $dataPlan)) {
+            $this->db->transRollback();
+            return false;
+        }
+
+        // Update dataSummary
+        $limitTagihanModel = new LimitTagihanModel();
+        if (!$limitTagihanModel->updateDataForPlan($dataLimit)) {
+        // if (!$this->db->table('summary_tagihan')->insert($dataSummary)) {
             $this->db->transRollback();
             return false;
         }
