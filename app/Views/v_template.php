@@ -285,13 +285,13 @@
             </li>
             <li class="nav-item">
                 <a href="<?= base_url('plan_tagihan') ?>" class="nav-link <?= $menu == 'planTagihan' ? 'active' : '' ?>">
-                    <i class="nav-icon fas fa-file"></i>
+                    <i class="nav-icon fas fa-tasks"></i>
                     <p>Plan Tagihan</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="<?= base_url('debit_tagihan') ?>" class="nav-link <?= $menu == 'debitTagihan' ? 'active' : '' ?>">
-                    <i class="nav-icon fas fa-file"></i>
+                    <i class="nav-icon fas fa-money-bill"></i>
                     <p>Debit Tagihan</p>
                 </a>
             </li>
@@ -324,13 +324,19 @@
             </li>
             <li class="nav-item">
                 <a href="<?= base_url('limit_tagihan') ?>" class="nav-link <?= $menu == 'limitTagihan' ? 'active' : '' ?>">
-                    <i class="nav-icon fas fa-file"></i>
+                    <i class="nav-icon fas fa-credit-card"></i>
                     <p>Limit Tagihan</p>
                 </a>
             </li>
             <li class="nav-item">
+                <a href="<?= base_url('tanggal_tagihan') ?>" class="nav-link <?= $menu == 'tanggalTagihan' ? 'active' : '' ?>">
+                    <i class="nav-icon fas fa-calendar-day"></i>
+                    <p>Tanggal Tagihan</p>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="<?= base_url('month') ?>" class="nav-link <?= $menu == 'month' ? 'active' : '' ?>">
-                    <i class="nav-icon fas fa-file"></i>
+                    <i class="nav-icon fas fa-calendar-alt"></i>
                     <p>Month</p>
                 </a>
             </li>

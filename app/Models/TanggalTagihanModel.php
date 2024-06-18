@@ -4,15 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class BungaTagihanModel extends Model
+class TanggalTagihanModel extends Model
 {
-    protected $table            = 'bunga_tagihan';
+    protected $table            = 'tanggal_tagihan';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['bunga', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields    = ['tanggal', 'created_at', 'updated_at', 'deleted_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -46,10 +46,6 @@ class BungaTagihanModel extends Model
 
     public function getAllData() {
         return $this->findAll();
-    }
-
-    public function getFirstData() {
-        return $this->first();
     }
 
     public function createData($data) 

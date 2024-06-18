@@ -68,10 +68,19 @@
                             echo "<pre>";
                             var_dump($value);
                             echo "</pre>";
+                            $dataPlan = $value['data_plan'][0];
+                            echo "<pre>";
+                            var_dump($dataPlan);
+                            echo "</pre>";
                             ?>
-                            <?php if($value['data_plan'][0]['status_debit'] === 1):?>
-                                <?php $index = (count($value['data_plan'][0]['data_debit']) > 3 ? 3 : count($value['data_plan'][0]['data_debit'])); ;?>
-                                <?php $data_debit = array_slice($value['data_plan'][0]['data_debit'], -$index, $index); ?>
+                            <?php if($dataPlan['status_debit'] === 1):?>
+                                <?php $index = (count($dataPlan['data_debit']) > 3 ? 3 : count($dataPlan['data_debit']));?>
+                                <?php $data_debit = array_slice($dataPlan['data_debit'], -$index, $index); ?>
+                                <?php
+                                echo "<pre>";
+                                var_dump($data_debit);
+                                echo "</pre>";
+                                ?>
                                 <?php foreach ($data_debit as $key1 => $value1) : ?>
                                     <tr>
                                         <?php if ($key1 == 0): ?>
@@ -79,7 +88,7 @@
                                             <td rowspan="<?=$index?>"><?= $value['code'] ?></td>
                                             <td rowspan="<?=$index?>"><?= $value['kategori'] ?></td>
                                             <td rowspan="<?=$index?>"><?= $value['nama_tagihan'] ?></td>
-                                            <td rowspan="<?=$index?>"><?= $value['data_plan'][0]['plan'] ?></td>
+                                            <td rowspan="<?=$index?>"><?= $dataPlan['plan'] ?></td>
                                         <?php endif; ?>
                                         <td><?= $value1['debit_ke'] ?></td>
                                         <td><?= $value1['debit_month'] ?></td>
@@ -107,7 +116,7 @@
                                     <td><?= $value['kategori'] ?></td>
                                     <td><?= $value['nama_tagihan'] ?></td>
                                     <td><?= $value['data_plan'][0]['plan'] ?></td>
-                                    <td>-</td>
+                                    <td>1</td>
                                     <td>-</td>
                                     <td>-</td>
                                     <td>-</td>
@@ -126,6 +135,7 @@
                                     </td>
                                 </tr>
                             <?php endif;?>
+                            <?php echo "===============================================";?>
                         <?php endforeach; ?>
                     </tbody>
                     <tfoot>
@@ -287,50 +297,6 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-
-
-<!-- Modal Edit Data -->  
-<?php foreach ($data as $key => $value) { ?>
-    <div class="modal fade" id="edit-data<?= $value['id'] ?>">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit Data <?= $judul ?></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <?php echo form_open('kategori_tagihan/update/'.$value['id']) ?>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="">Kategori</label>
-                        <input type="text" name="kategori" value="<?= $value['kategori'] ?>" class="form-control" placeholder="Kategori" id="create_kategori" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Deskripsi</label>
-                        <input type="text" name="deskripsi" value="<?= $value['deskripsi'] ?>" class="form-control" placeholder="Deskripsi" id="create_deskripsi" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select name="status" class="form-control select2" style="width: 100%;" required>
-                            <?php foreach ($optionsStatus as $status): ?>
-                                <option value="<?= esc($status['id']); ?>" <?= $status['id'] == $value['status'] ? 'selected' : '' ?>><?= esc($status['status']); ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-warning btn-flat">Save</button>
-                </div>
-                <?php echo form_close() ?>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
-<?php } ?>
 
 <script>
     $(function () {

@@ -58,7 +58,11 @@ $routes->get('/code_tagihan/reset/(:segment)', 'CodeTagihanController::reset/$1'
 $routes->get('/bunga_tagihan', 'BungaTagihanController::index');
 $routes->post('/bunga_tagihan/store', 'BungaTagihanController::store');
 $routes->post('/bunga_tagihan/update/(:segment)', 'BungaTagihanController::update/$1');
-// $routes->get('/bunga_tagihan/reset/(:segment)', 'BungaTagihanController::reset/$1');
+
+// Tanggal Tagihan 
+$routes->get('/tanggal_tagihan', 'TanggalTagihanController::index');
+$routes->post('/tanggal_tagihan/store', 'TanggalTagihanController::store');
+$routes->post('/tanggal_tagihan/update/(:segment)', 'TanggalTagihanController::update/$1');
 
 // Debit Tagihan 
 $routes->get('/debit_tagihan', 'DebitTagihanController::index');
